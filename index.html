@@ -1,0 +1,2503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Codeで変わる、あなたの仕事の未来 | Tatami Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E8833A;
+    --orange-light: #F4A968;
+    --orange-pale: #FDF2E8;
+    --green: #2F5D4F;
+    --green-light: #4A7D6E;
+    --green-pale: #EAF1EE;
+    --ink: #2B2B2B;
+    --ink-sub: #555;
+    --line: #E8E4DE;
+    --bg: #FFFFFF;
+    --bg-soft: #FBF8F4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 6vh 7vw;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg);
+    animation: fadeIn 0.35s ease;
+  }
+
+  .slide.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 共通見出し */
+  h1 { font-weight: 900; line-height: 1.2; color: var(--ink); }
+  h2 { font-weight: 900; line-height: 1.25; color: var(--ink); }
+  h3 { font-weight: 700; line-height: 1.35; color: var(--ink); }
+  p  { font-weight: 400; line-height: 1.7; color: var(--ink); }
+
+  /* ページ番号 & ロゴ */
+  .pagenum {
+    position: fixed;
+    left: 2.5vw;
+    bottom: 2.2vh;
+    font-size: 18px;
+    color: var(--ink-sub);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    z-index: 10;
+  }
+  .brand {
+    position: fixed;
+    right: 2.5vw;
+    bottom: 2.2vh;
+    font-size: 18px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    z-index: 10;
+  }
+  .brand::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--orange);
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* 進捗バー */
+  .progress {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--orange);
+    transition: width 0.3s ease;
+    z-index: 20;
+  }
+
+  /* セクションラベル */
+  .section-label {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.12em;
+    margin-bottom: 24px;
+    padding: 6px 18px;
+    border: 2px solid var(--orange);
+    border-radius: 999px;
+  }
+
+  /* ==================== 個別スライド ==================== */
+
+  /* Slide 1: タイトル */
+  .slide--cover {
+    background: linear-gradient(135deg, #FDF2E8 0%, #FFFFFF 50%, #EAF1EE 100%);
+    align-items: center;
+    text-align: center;
+  }
+  .slide--cover .eyebrow {
+    font-size: 24px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin-bottom: 40px;
+  }
+  .slide--cover h1 {
+    font-size: 92px;
+    margin-bottom: 30px;
+    letter-spacing: -0.02em;
+  }
+  .slide--cover h1 .accent { color: var(--orange); }
+  .slide--cover .sub {
+    font-size: 38px;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 60px;
+  }
+  .slide--cover .meta {
+    margin-top: 80px;
+    font-size: 22px;
+    color: var(--ink-sub);
+  }
+  .slide--cover .meta .logo {
+    display: inline-block;
+    margin-left: 24px;
+    padding-left: 24px;
+    border-left: 2px solid var(--line);
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  /* Slide 2: 自己紹介 */
+  .slide--profile {
+    padding: 5vh 6vw;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FBF8F4 100%);
+  }
+  .profile-header { margin-bottom: 26px; }
+  .profile-eyebrow {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.22em;
+    margin-bottom: 10px;
+  }
+  .profile-tagline-big {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.25;
+    margin: 0;
+  }
+  .profile-tagline-big .accent { color: var(--orange); }
+  .profile-main {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 36px;
+    align-items: start;
+    margin-bottom: 22px;
+  }
+  .profile-photo-wrap {
+    width: 240px;
+    height: 240px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--bg-soft);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+  .profile-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .profile-info { min-width: 0; }
+  .profile-name-jp {
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .profile-name-reading {
+    font-size: 18px;
+    color: var(--ink-sub);
+    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+  }
+  .profile-role {
+    font-size: 20px;
+    color: var(--green);
+    font-weight: 700;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--line);
+  }
+  .profile-bio {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .profile-bio strong { color: var(--orange); font-weight: 700; }
+  .profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .profile-stat {
+    background: white;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border-left: 4px solid var(--orange);
+  }
+  .profile-stat-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 2px;
+  }
+  .profile-stat-value.small { font-size: 20px; }
+  .profile-stat-label {
+    font-size: 14px;
+    color: var(--ink-sub);
+    font-weight: 500;
+  }
+  .profile-practice {
+    padding: 16px 22px;
+    background: var(--orange-pale);
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  .profile-practice-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+  .profile-practice-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .profile-practice-items .chip {
+    display: inline-block;
+    padding: 6px 14px;
+    background: white;
+    border: 1.5px solid var(--orange);
+    color: var(--ink);
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .profile-bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 150px 200px;
+    gap: 14px;
+    align-items: stretch;
+  }
+  .profile-bottom-row .profile-practice {
+    margin-bottom: 0;
+  }
+  .profile-sub-photo {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg-soft);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    align-self: stretch;
+    min-height: 140px;
+    margin: 0;
+  }
+  .profile-sub-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .profile-sub-photo figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #fff;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.72) 100%);
+    letter-spacing: 0.04em;
+  }
+  .profile-sub-photo figcaption strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFD79A;
+  }
+
+  /* Slide 3: ゴール */
+  .slide--goal h1 {
+    font-size: 56px;
+    margin-bottom: 40px;
+  }
+  .slide--goal .big-message {
+    font-size: 60px;
+    font-weight: 900;
+    line-height: 1.4;
+    margin-bottom: 60px;
+    padding: 40px;
+    background: var(--orange-pale);
+    border-left: 10px solid var(--orange);
+    border-radius: 0 16px 16px 0;
+  }
+  .slide--goal .big-message .accent { color: var(--orange); }
+  .goal-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .goal-card {
+    background: var(--bg-soft);
+    border-radius: 16px;
+    padding: 32px 28px;
+    border-top: 4px solid var(--green);
+  }
+  .goal-card .num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+  .goal-card .text {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  /* Slide 4: Claude Codeって？ */
+  .slide--what h1 {
+    font-size: 64px;
+    margin-bottom: 60px;
+  }
+  .contrast {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 40px;
+    align-items: stretch;
+  }
+  .contrast-box {
+    padding: 40px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .contrast-box.wrong {
+    background: #F5F2EE;
+    border: 2px solid var(--line);
+    opacity: 0.75;
+  }
+  .contrast-box.right {
+    background: var(--orange-pale);
+    border: 3px solid var(--orange);
+    box-shadow: 0 10px 30px rgba(232,131,58,0.15);
+  }
+  .contrast-box .label {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+  }
+  .wrong .label { color: #999; }
+  .right .label { color: var(--orange); }
+  .contrast-box .headline {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+  .contrast-box .desc {
+    font-size: 22px;
+    line-height: 1.6;
+    color: var(--ink-sub);
+  }
+  .vs {
+    display: flex;
+    align-items: center;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--green);
+  }
+
+  /* Slide: ウェブ版Claude vs Claude Code */
+  .slide--compare-web h1 {
+    font-size: 56px;
+    margin-bottom: 40px;
+  }
+  .slide--compare-web .lead {
+    font-size: 26px;
+    color: var(--ink-sub);
+    margin-bottom: 30px;
+  }
+  .compare-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    flex: 1;
+  }
+  .compare-col {
+    padding: 36px 32px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .compare-col.web {
+    background: var(--green-pale);
+    border: 2px solid var(--green);
+  }
+  .compare-col.code {
+    background: var(--orange-pale);
+    border: 3px solid var(--orange);
+    box-shadow: 0 10px 30px rgba(232,131,58,0.15);
+  }
+  .compare-col .tag {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    width: fit-content;
+  }
+  .compare-col.web .tag { background: var(--green); color: white; }
+  .compare-col.code .tag { background: var(--orange); color: white; }
+  .compare-col h3 {
+    font-size: 34px;
+    margin-bottom: 18px;
+    line-height: 1.3;
+  }
+  .compare-col .role {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px dashed rgba(0,0,0,0.15);
+  }
+  .compare-col.web .role { color: var(--green); }
+  .compare-col.code .role { color: var(--orange); }
+  .compare-col ul { list-style: none; flex: 1; }
+  .compare-col li {
+    font-size: 21px;
+    padding: 9px 0;
+    padding-left: 32px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .compare-col li::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 18px;
+    width: 14px;
+    height: 3px;
+  }
+  .compare-col.web li::before { background: var(--green); }
+  .compare-col.code li::before { background: var(--orange); }
+  .compare-col .example {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+  .compare-col .example strong { font-weight: 700; }
+  .compare-footer {
+    margin-top: 24px;
+    padding: 20px 28px;
+    background: var(--ink);
+    color: white;
+    border-radius: 12px;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .compare-footer .accent { color: var(--orange-light); }
+
+  /* Slide: 他ツールとの違い */
+  .slide--compare-tools h1 {
+    font-size: 48px;
+    margin-bottom: 30px;
+  }
+  .tool-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 20px;
+  }
+  .tool-table thead th {
+    padding: 18px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 22px;
+    background: var(--bg-soft);
+    color: var(--ink-sub);
+    border-bottom: 2px solid var(--line);
+  }
+  .tool-table thead th.claude-col {
+    background: var(--orange);
+    color: white;
+    border-bottom: 2px solid var(--orange);
+  }
+  .tool-table thead th:first-child {
+    background: var(--green);
+    color: white;
+    border-top-left-radius: 12px;
+    border-bottom: 2px solid var(--green);
+  }
+  .tool-table thead th.claude-col { border-top-right-radius: 0; }
+  .tool-table thead th:last-child { border-top-right-radius: 12px; }
+  .tool-table tbody td {
+    padding: 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 20px;
+    line-height: 1.5;
+    vertical-align: middle;
+  }
+  .tool-table tbody td:first-child {
+    background: var(--bg-soft);
+    font-weight: 700;
+    color: var(--green);
+    white-space: nowrap;
+  }
+  .tool-table tbody td.claude-col {
+    background: var(--orange-pale);
+    font-weight: 500;
+  }
+  .tool-table .check {
+    color: var(--orange);
+    font-weight: 900;
+    font-size: 24px;
+  }
+  .tool-table .maker {
+    font-size: 16px;
+    color: var(--ink-sub);
+    font-weight: 400;
+    display: block;
+    margin-top: 4px;
+  }
+  .tools-note {
+    margin-top: 24px;
+    padding: 20px 28px;
+    background: var(--orange-pale);
+    border-left: 6px solid var(--orange);
+    border-radius: 0 12px 12px 0;
+    font-size: 22px;
+    line-height: 1.6;
+  }
+  .tools-note strong { color: var(--orange); font-weight: 900; }
+
+  /* Slide 5,6,9: デモスライド */
+  .slide--demo {
+    background: linear-gradient(180deg, #FFFFFF 0%, #FBF8F4 100%);
+  }
+  .demo-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .demo-badge {
+    background: var(--orange);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .demo-time {
+    background: var(--green-pale);
+    color: var(--green);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .slide--demo h1 {
+    font-size: 60px;
+    margin-bottom: 30px;
+    line-height: 1.3;
+  }
+  .demo-flow {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    border: 2px solid var(--line);
+    font-size: 30px;
+    line-height: 1.6;
+    font-weight: 700;
+  }
+  .demo-flow .arrow {
+    color: var(--orange);
+    margin: 0 16px;
+    font-weight: 900;
+  }
+  .demo-screenshot {
+    margin-top: 30px;
+    flex: 1;
+    min-height: 250px;
+    background: #EEE;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 22px;
+    border: 2px dashed #BBB;
+  }
+  .demo-note {
+    margin-top: 24px;
+    font-size: 22px;
+    color: var(--green);
+    font-weight: 500;
+  }
+  .most-important {
+    position: absolute;
+    top: 5vh;
+    right: 5vw;
+    background: #E74C3C;
+    color: white;
+    padding: 10px 22px;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 999px;
+    transform: rotate(4deg);
+    box-shadow: 0 6px 20px rgba(231,76,60,0.3);
+  }
+
+  /* Slide 7: システム構成図 */
+  .slide--arch h1 {
+    font-size: 50px;
+    margin-bottom: 30px;
+  }
+  .arch-diagram {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+  }
+  .arch-svg {
+    width: 100%;
+    max-width: 1400px;
+    height: auto;
+  }
+
+  /* Slide 8: コスト表 */
+  .slide--cost h1 {
+    font-size: 56px;
+    margin-bottom: 40px;
+  }
+  .cost-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 26px;
+  }
+  .cost-table thead th {
+    background: var(--green);
+    color: white;
+    padding: 20px 24px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 24px;
+  }
+  .cost-table thead th:first-child { border-top-left-radius: 12px; }
+  .cost-table thead th:last-child { border-top-right-radius: 12px; }
+  .cost-table tbody td {
+    padding: 22px 24px;
+    border-bottom: 1px solid var(--line);
+    font-size: 24px;
+    line-height: 1.5;
+  }
+  .cost-table tbody tr:nth-child(even) { background: var(--bg-soft); }
+  .cost-table .tool-name {
+    font-weight: 700;
+    color: var(--orange);
+    white-space: nowrap;
+  }
+  .cost-table .price {
+    font-weight: 700;
+    color: var(--green);
+    white-space: nowrap;
+  }
+  .cost-note {
+    margin-top: 24px;
+    font-size: 20px;
+    color: var(--ink-sub);
+  }
+
+  /* Slide 10: デモまとめ */
+  .slide--summary {
+    background: linear-gradient(135deg, #FDF2E8 0%, #EAF1EE 100%);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .slide--summary h1 {
+    font-size: 48px;
+    color: var(--ink-sub);
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+  .slide--summary .punch {
+    font-size: 80px;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 40px;
+  }
+  .slide--summary .punch .accent { color: var(--orange); }
+  .slide--summary .punch .accent-green { color: var(--green); }
+  .slide--summary .sub {
+    font-size: 30px;
+    color: var(--ink-sub);
+  }
+
+  /* Slide 11: 9分でインストール */
+  .slide--install-intro h1 {
+    font-size: 72px;
+    text-align: center;
+    margin-bottom: 60px;
+    line-height: 1.2;
+  }
+  .slide--install-intro h1 .time { color: var(--orange); }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .step-card {
+    background: var(--bg-soft);
+    padding: 32px 24px;
+    border-radius: 16px;
+    text-align: center;
+    border-top: 5px solid var(--orange);
+  }
+  .step-card .step-num {
+    font-size: 22px;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .step-card .step-title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+  .step-card .step-time {
+    font-size: 18px;
+    color: var(--green);
+    font-weight: 700;
+    padding: 6px 14px;
+    background: var(--green-pale);
+    border-radius: 999px;
+    display: inline-block;
+  }
+
+  /* Slide 12-15: インストール手順 */
+  .slide--install {
+    display: none;
+  }
+  .slide--install.active {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .install-left { display: flex; flex-direction: column; }
+  .install-step-label {
+    font-size: 22px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+  .slide--install h1 {
+    font-size: 56px;
+    line-height: 1.3;
+    margin-bottom: 24px;
+  }
+  .slide--install .time-badge {
+    display: inline-block;
+    background: var(--green-pale);
+    color: var(--green);
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  .install-actions {
+    list-style: none;
+  }
+  .install-actions li {
+    font-size: 28px;
+    padding: 14px 0;
+    padding-left: 56px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .install-actions li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 40px;
+    height: 40px;
+    background: var(--orange);
+    color: white;
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .install-actions .url {
+    display: inline-block;
+    background: #F5F2EE;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-family: 'Menlo', monospace;
+    font-size: 24px;
+    color: var(--green);
+  }
+  .install-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .qr-placeholder {
+    width: 340px;
+    height: 340px;
+    background: white;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+  }
+  .qr-placeholder .qr-pattern {
+    width: 100%;
+    height: 100%;
+    background-image:
+      repeating-linear-gradient(0deg, var(--ink) 0 10px, transparent 10px 20px),
+      repeating-linear-gradient(90deg, var(--ink) 0 10px, transparent 10px 20px);
+    background-blend-mode: multiply;
+    opacity: 0.9;
+    mask-image: radial-gradient(circle, black 60%, transparent 100%);
+  }
+  .qr-caption {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green);
+    text-align: center;
+  }
+  .qr-url {
+    margin-top: 8px;
+    font-size: 18px;
+    color: var(--ink-sub);
+    font-family: 'Menlo', monospace;
+  }
+
+  /* Slide 14: 3タブ */
+  .tabs-preview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+  }
+  .tab-item {
+    background: white;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .tab-item.highlight {
+    border-color: var(--orange);
+    background: var(--orange-pale);
+  }
+  .tab-item .tab-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .tab-item .tab-desc {
+    font-size: 18px;
+    color: var(--ink-sub);
+  }
+
+  /* Slide 16,17: ワーク */
+  .slide--work {
+    background: linear-gradient(180deg, #FFFFFF 0%, #FDF2E8 100%);
+  }
+  .work-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .work-badge {
+    background: var(--orange);
+    color: white;
+    padding: 12px 26px;
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .work-time {
+    background: var(--green);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .slide--work h1 {
+    font-size: 60px;
+    margin-bottom: 30px;
+    line-height: 1.3;
+  }
+  .prompt-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px 36px;
+    border: 2px solid var(--line);
+    margin-bottom: 18px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .prompt-card .prompt-num {
+    width: 54px;
+    height: 54px;
+    background: var(--orange);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .prompt-card .prompt-text {
+    font-size: 30px;
+    font-weight: 700;
+    font-family: 'Menlo', 'Noto Sans JP', monospace;
+  }
+  .fill-blanks {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    border: 3px dashed var(--orange);
+    margin-top: 20px;
+  }
+  .fill-blanks .title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--orange);
+    margin-bottom: 20px;
+  }
+  .fill-blanks ol {
+    list-style: none;
+    counter-reset: blank;
+  }
+  .fill-blanks li {
+    counter-increment: blank;
+    font-size: 26px;
+    padding: 12px 0;
+    padding-left: 50px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .fill-blanks li::before {
+    content: counter(blank);
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 36px;
+    height: 36px;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .fill-blanks .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 3px solid var(--orange);
+    padding: 0 12px;
+    font-weight: 700;
+    color: var(--orange);
+  }
+
+  /* Slide 18: 1週間ガイド */
+  .slide--week h1 {
+    font-size: 52px;
+    margin-bottom: 30px;
+  }
+  .slide--week .sub {
+    font-size: 22px;
+    color: var(--ink-sub);
+    margin-bottom: 30px;
+  }
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 14px;
+    flex: 1;
+    max-height: 58vh;
+  }
+  .day-card {
+    background: white;
+    border-radius: 12px;
+    padding: 18px 14px;
+    border-top: 4px solid var(--green);
+    display: flex;
+    flex-direction: column;
+  }
+  .day-card:nth-child(odd) { border-top-color: var(--orange); }
+  .day-card .day-label {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+  .day-card:nth-child(even) .day-label { color: var(--green); }
+  .day-card .day-title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .day-card .day-task {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-sub);
+  }
+
+  /* Slide: 1年後の世界 */
+  .slide--future {
+    background: linear-gradient(180deg, #FFFFFF 0%, #FBF8F4 100%);
+  }
+  .slide--future h1 {
+    font-size: 56px;
+    margin-bottom: 14px;
+    line-height: 1.25;
+  }
+  .slide--future h1 .accent { color: var(--orange); }
+  .slide--future .future-sub {
+    font-size: 24px;
+    color: var(--ink-sub);
+    margin-bottom: 34px;
+    line-height: 1.5;
+  }
+  .future-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 26px;
+  }
+  .future-col {
+    padding: 30px 28px;
+    border-radius: 20px;
+  }
+  .future-col.plus {
+    background: var(--orange-pale);
+    border: 3px solid var(--orange);
+    box-shadow: 0 10px 30px rgba(232,131,58,0.15);
+  }
+  .future-col.minus {
+    background: #F5F2EE;
+    border: 2px solid #D5CFC5;
+    opacity: 0.9;
+  }
+  .future-col .future-tag {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .future-col.plus .future-tag { background: var(--orange); color: white; }
+  .future-col.minus .future-tag { background: #999; color: white; }
+  .future-col h3 {
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .future-col ul { list-style: none; }
+  .future-col li {
+    font-size: 21px;
+    padding: 8px 0;
+    padding-left: 36px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .future-col.plus li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 26px;
+    height: 26px;
+    background: var(--orange);
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .future-col.minus li::before {
+    content: "×";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 26px;
+    height: 26px;
+    background: #999;
+    color: white;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .future-message {
+    padding: 22px 30px;
+    background: var(--ink);
+    color: white;
+    border-radius: 14px;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .future-message .small {
+    display: block;
+    font-size: 18px;
+    opacity: 0.85;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .future-message .punch {
+    font-size: 26px;
+    font-weight: 900;
+  }
+  .future-message .punch .accent { color: var(--orange-light); }
+
+  /* Slide: マンツーマンの強み（他校との違い） */
+  .slide--why-us {
+    background: linear-gradient(180deg, #FFFFFF 0%, #FBF8F4 100%);
+  }
+  .slide--why-us h1 {
+    font-size: 56px;
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  .slide--why-us h1 .accent { color: var(--orange); }
+  .why-sub {
+    font-size: 22px;
+    color: var(--ink-sub);
+    margin-bottom: 34px;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 30px;
+  }
+  .why-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px 28px;
+    border-top: 5px solid var(--orange);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+  .why-icon {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--orange);
+    letter-spacing: 0.18em;
+    margin-bottom: 14px;
+  }
+  .why-title {
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+  .why-desc {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--ink-sub);
+  }
+  .why-callout {
+    padding: 22px 32px;
+    background: var(--ink);
+    color: white;
+    border-radius: 14px;
+    line-height: 1.6;
+  }
+  .why-callout .callout-text {
+    display: block;
+    font-size: 18px;
+    opacity: 0.85;
+    margin-bottom: 10px;
+  }
+  .why-callout .callout-text strong {
+    color: var(--orange-light);
+    font-weight: 700;
+  }
+  .why-callout .callout-punch {
+    display: block;
+    font-size: 24px;
+    font-weight: 900;
+  }
+  .why-callout .callout-punch .accent { color: var(--orange-light); }
+
+  /* Slide 19: 継続サポート（無料相談ファースト） */
+  .slide--support {
+    background: linear-gradient(135deg, #FDF2E8 0%, #FFFFFF 50%, #EAF1EE 100%);
+    justify-content: center;
+  }
+  .slide--support .title-block {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .slide--support h1 {
+    font-size: 56px;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .slide--support h1 .accent { color: var(--orange); }
+  .slide--support .title-sub {
+    font-size: 24px;
+    color: var(--ink-sub);
+    font-weight: 500;
+  }
+  .support-hero {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 50px;
+    padding: 44px 48px;
+    background: white;
+    border-radius: 24px;
+    border: 3px solid var(--orange);
+    box-shadow: 0 20px 50px rgba(232,131,58,0.15);
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    padding: 8px 22px;
+    border-radius: 999px;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-size: 46px;
+    font-weight: 900;
+    line-height: 1.25;
+    margin-bottom: 18px;
+  }
+  .hero-desc {
+    font-size: 22px;
+    color: var(--ink-sub);
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+  .hero-points { list-style: none; }
+  .hero-points li {
+    font-size: 22px;
+    padding: 8px 0;
+    padding-left: 38px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .hero-points li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 26px;
+    height: 26px;
+    background: var(--orange);
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .support-hero-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .qr-big {
+    width: 260px;
+    height: 260px;
+    background: white;
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .qr-big .qr-pattern {
+    width: 100%;
+    height: 100%;
+    background-image:
+      repeating-linear-gradient(0deg, var(--ink) 0 10px, transparent 10px 20px),
+      repeating-linear-gradient(90deg, var(--ink) 0 10px, transparent 10px 20px);
+    opacity: 0.9;
+    mask-image: radial-gradient(circle, black 60%, transparent 100%);
+  }
+  .qr-caption-big {
+    margin-top: 14px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green);
+    text-align: center;
+    line-height: 1.4;
+  }
+  .support-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 28px;
+    background: white;
+    border: 2px solid var(--line);
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+  .support-line-text {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .support-line-text .hint {
+    display: block;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink-sub);
+    margin-top: 4px;
+  }
+  .support-line-qr {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .support-line-qr .qr-s {
+    width: 86px;
+    height: 86px;
+    background-image:
+      repeating-linear-gradient(0deg, var(--ink) 0 4px, transparent 4px 8px),
+      repeating-linear-gradient(90deg, var(--ink) 0 4px, transparent 4px 8px);
+    opacity: 0.9;
+    mask-image: radial-gradient(circle, black 60%, transparent 100%);
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+  }
+  .support-line-qr .qr-s-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .hero-urgent {
+    margin-top: 18px;
+    padding: 14px 20px;
+    background: var(--orange-pale);
+    border-left: 5px solid var(--orange);
+    border-radius: 0 10px 10px 0;
+    font-size: 20px;
+    color: var(--ink);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .hero-urgent .bang { color: var(--orange); }
+  .support-footnote {
+    text-align: center;
+    font-size: 17px;
+    color: var(--ink-sub);
+    line-height: 1.6;
+  }
+  .support-footnote strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* Slide 21: 料金プラン */
+  .slide--pricing {
+    padding: 4vh 5vw 6vh;
+  }
+  .pricing-header {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+  .slide--pricing h1 {
+    font-size: 42px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .pricing-sub {
+    font-size: 20px;
+    color: var(--ink-sub);
+  }
+  .pricing-section { margin-bottom: 22px; }
+  .spot-banner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 26px;
+    background: linear-gradient(135deg, #FDF2E8 0%, #FBF8F4 100%);
+    border: 2px solid var(--orange);
+    border-radius: 14px;
+    margin-bottom: 20px;
+  }
+  .spot-banner-label-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .spot-banner-label {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .spot-banner-en {
+    font-size: 13px;
+    color: var(--orange);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+  .spot-banner-divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--line);
+    margin: 4px 0;
+  }
+  .spot-banner-tag {
+    font-size: 17px;
+    color: var(--ink);
+    flex: 1;
+    line-height: 1.4;
+  }
+  .spot-banner-tag strong { font-weight: 700; }
+  .spot-banner-price {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--orange);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .spot-banner-price .unit {
+    font-size: 14px;
+    color: var(--ink-sub);
+    font-weight: 500;
+    margin-left: 4px;
+  }
+  .pricing-section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--orange);
+    flex-wrap: wrap;
+  }
+  .pricing-section-label-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .pricing-section-label {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .pricing-section-en {
+    font-size: 14px;
+    color: var(--orange);
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+  .pricing-section-price {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--orange);
+    margin-left: auto;
+  }
+  .pricing-section-price .unit {
+    font-size: 15px;
+    color: var(--ink-sub);
+    font-weight: 500;
+    margin-left: 6px;
+  }
+  .pricing-section-meta {
+    width: 100%;
+    font-size: 15px;
+    color: var(--ink-sub);
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .course-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border-top: 4px solid var(--orange);
+  }
+  .course-name {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--orange);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .course-desc {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 10px;
+    min-height: 66px;
+  }
+  .course-target {
+    font-size: 13px;
+    color: var(--ink-sub);
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+    line-height: 1.4;
+  }
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .plan-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    border: 2px solid var(--line);
+    position: relative;
+  }
+  .plan-card.recommended {
+    border: 3px solid var(--orange);
+    background: linear-gradient(180deg, #FFFFFF, #FDF2E8);
+  }
+  .plan-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--orange);
+    color: white;
+    padding: 4px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+  .plan-tier {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+  .plan-card.recommended .plan-tier { color: var(--orange); }
+  .plan-price {
+    font-size: 30px;
+    font-weight: 900;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .plan-price .unit {
+    font-size: 15px;
+    color: var(--ink-sub);
+    font-weight: 500;
+  }
+  .plan-tag {
+    font-size: 15px;
+    color: var(--ink-sub);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    line-height: 1.4;
+  }
+  .plan-card ul { list-style: none; margin-bottom: 10px; }
+  .plan-card li {
+    font-size: 16px;
+    padding: 4px 0;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.4;
+  }
+  .plan-card li::before {
+    content: "●";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    color: var(--orange);
+    font-size: 10px;
+  }
+  .plan-footer {
+    font-size: 13px;
+    color: var(--ink-sub);
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+  }
+  .pricing-footer {
+    margin-top: 18px;
+    padding: 14px 26px;
+    background: var(--green);
+    color: white;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .pricing-footer strong {
+    color: white;
+    font-weight: 900;
+  }
+
+  /* ヘルプ */
+  .help-hint {
+    position: fixed;
+    right: 2.5vw;
+    top: 2vh;
+    font-size: 14px;
+    color: #AAA;
+    z-index: 10;
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+<div id="deck">
+
+  <!-- ========== Slide 1: タイトル ========== -->
+  <section class="slide slide--cover active">
+    <div class="eyebrow">TATAMI WORKS SEMINAR</div>
+    <h1>Claude Codeで変わる、<br>あなたの<span class="accent">仕事の未来</span></h1>
+    <div class="sub">60分後、Claude Codeを自分で動かせる状態</div>
+    <div class="meta">
+      <span class="logo">● Tatami Works</span>
+    </div>
+  </section>
+
+  <!-- ========== Slide 2: 自己紹介 ========== -->
+  <section class="slide slide--profile">
+    <div class="profile-header">
+      <div class="profile-eyebrow">ABOUT ME</div>
+      <h1 class="profile-tagline-big">あなたの業務に<br><span class="accent">寄り添うパートナー</span>。</h1>
+    </div>
+
+    <div class="profile-main">
+      <div class="profile-photo-wrap">
+        <img src="assets/profile.png" alt="冨上健太郎">
+      </div>
+      <div class="profile-info">
+        <div class="profile-name-jp">冨上 健太郎</div>
+        <div class="profile-name-reading">とかみ けんたろう</div>
+        <div class="profile-role">Tatami Works 代表</div>
+        <div class="profile-bio">
+          1996年仙台市生まれ。東北大学 理学部物理学科を卒業後、ベンチャー企業で3年間エンジニアを経験。フリーランスを経て、2022年11月に前代表の地方創生への想いを引き継ぎ<strong>Tatami Works代表</strong>へ。<strong>コワーキングスペース運営・プログラミング教室運営・エンジニア</strong>に加え、<strong>個人・法人向けのDX／生成AI活用支援</strong>も提供。地域の皆さんがAIを「自分ごと」として使いこなせるよう、<strong>対面サポート</strong>にこだわっています。
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-value">2022〜</div>
+        <div class="profile-stat-label">代表就任</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-value">6:00〜</div>
+        <div class="profile-stat-label">早朝対応OK</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-value small">オンライン&amp;対面</div>
+        <div class="profile-stat-label">対応形式</div>
+      </div>
+    </div>
+
+    <div class="profile-bottom-row">
+      <div class="profile-practice">
+        <div class="profile-practice-label">AI活用の実践例</div>
+        <div class="profile-practice-items">
+          <span class="chip">Claude Code開発</span>
+          <span class="chip">業務ワークフロー構築</span>
+          <span class="chip">AIデザイン</span>
+          <span class="chip">データ分析自動化</span>
+          <span class="chip">チャットボット開発</span>
+        </div>
+      </div>
+      <figure class="profile-sub-photo">
+        <img src="assets/profile-sub.jpg" alt="">
+      </figure>
+      <figure class="profile-sub-photo">
+        <img src="assets/tatami-works-venue.jpg" alt="Tatami Works">
+        <figcaption>本日の会場<br><strong>Tatami Works</strong></figcaption>
+      </figure>
+    </div>
+
+  </section>
+
+  <!-- ========== Slide 3: 今日のゴール ========== -->
+  <section class="slide slide--goal">
+    <h1>今日のゴール</h1>
+    <div class="big-message">
+      60分後、あなたは<br><span class="accent">Claude Codeを自分で動かせる</span>ようになります。
+    </div>
+    <div class="goal-cards">
+      <div class="goal-card">
+        <div class="num">01</div>
+        <div class="text">自分のPCで<br>Claude Codeが起動</div>
+      </div>
+      <div class="goal-card">
+        <div class="num">02</div>
+        <div class="text">手を動かして<br>使い方を体感</div>
+      </div>
+      <div class="goal-card">
+        <div class="num">03</div>
+        <div class="text">明日からすぐ<br>仕事に試せる</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Slide 4: Claude Codeって？ ========== -->
+  <section class="slide slide--what">
+    <h1>Claude Codeって？</h1>
+    <div class="contrast">
+      <div class="contrast-box wrong">
+        <div class="label">よくある誤解</div>
+        <div class="headline">コードを書く<br>AIツール</div>
+        <div class="desc">エンジニア向けの難しいもの……?</div>
+      </div>
+      <div class="vs">→</div>
+      <div class="contrast-box right">
+        <div class="label">実際は</div>
+        <div class="headline">PC上の仕事を<br>代わりにやってくれるAI</div>
+        <div class="desc">Claudeが、あなたの代わりに手を動かす。指示するだけ。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Slide: ウェブ版Claude vs Claude Code ========== -->
+  <section class="slide slide--compare-web">
+    <h1>ウェブ版Claudeと、何が違う？</h1>
+    <div class="lead">「普段のChatGPTやClaudeと何が違うの？」にお答えします。</div>
+    <div class="compare-cols">
+      <div class="compare-col web">
+        <div class="tag">ウェブ版Claude</div>
+        <h3>claude.ai（ブラウザ版）</h3>
+        <div class="role">相談相手 / 壁打ち</div>
+        <ul>
+          <li>ブラウザで開いてチャット</li>
+          <li>ファイルを添付して質問</li>
+          <li>回答を<strong>コピペで持ち帰る</strong></li>
+          <li>会話の中で完結する</li>
+        </ul>
+        <div class="example"><strong>例：</strong>文章校正 / 要約 / ブレスト / 翻訳</div>
+      </div>
+      <div class="compare-col code">
+        <div class="tag">Claude Code</div>
+        <h3>あなたのPCの中で作業</h3>
+        <div class="role">作業代行者 / 実行担当</div>
+        <ul>
+          <li>PCのフォルダ・ファイルを直接操作</li>
+          <li>コマンド実行 / 他ツール連携OK</li>
+          <li>成果物が<strong>そのまま出来上がる</strong></li>
+          <li>長い作業も最後までやり切る</li>
+        </ul>
+        <div class="example"><strong>例：</strong>LP作成 / 毎朝の自動投稿 / Excel処理 / 資料作成</div>
+      </div>
+    </div>
+    <div class="compare-footer">
+      ウェブ版は <span class="accent">「相談相手」</span>、Claude Codeは <span class="accent">「作業代行者」</span>。
+    </div>
+  </section>
+
+  <!-- ========== Slide: 他のAIコーディングツールとの違い ========== -->
+  <section class="slide slide--compare-tools">
+    <h1>他のAIツールとは、どう違う？</h1>
+    <table class="tool-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">観点</th>
+          <th class="claude-col" style="width: 28%;">Claude Code<span class="maker" style="color:#FDE0C4;">by Anthropic</span></th>
+          <th style="width: 26%;">Codex<span class="maker">by OpenAI</span></th>
+          <th style="width: 26%;">Gemini CLI<span class="maker">by Google</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>得意なこと</td>
+          <td class="claude-col">長い作業を<br>最後までやり切る</td>
+          <td>スピード重視<br>ChatGPTと連携</td>
+          <td>Google系ツールと<br>の相性が良い</td>
+        </tr>
+        <tr>
+          <td>日本語</td>
+          <td class="claude-col"><span class="check">◎</span> 特に自然</td>
+          <td>◎</td>
+          <td>○</td>
+        </tr>
+        <tr>
+          <td>非エンジニア<br>への優しさ</td>
+          <td class="claude-col"><span class="check">◎</span> 説明が丁寧</td>
+          <td>△ 技術者向け寄り</td>
+          <td>△ 技術者向け寄り</td>
+        </tr>
+        <tr>
+          <td>ビジネス業務<br>（LP・資料・自動化）</td>
+          <td class="claude-col"><span class="check">◎</span> 今日やるやつ</td>
+          <td>○ コード寄り</td>
+          <td>○ コード寄り</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tools-note">
+      <strong>結論：</strong>どれも優秀なツールです。今日は <strong>「仕事を任せる」に最もフィットする Claude Code</strong> を使います。
+    </div>
+  </section>
+
+  <!-- ========== Slide 5: デモ① ========== -->
+  <section class="slide slide--demo">
+    <div class="demo-header">
+      <div class="demo-badge">DEMO 01</div>
+      <div class="demo-time">約4分</div>
+    </div>
+    <h1>リサーチ＆資料作成を、<br>まるっとお任せ</h1>
+    <div class="demo-flow">
+      「〜の分野について調査して」<span class="arrow">→</span>自動で調査<span class="arrow">→</span>レポートPDF化
+    </div>
+    <div class="demo-screenshot" style="padding:0;border:none;overflow:hidden;background:#fff;"><img src="assets/demo1-research.png" alt="Claude Codeリサーチ画面" style="width:100%;height:100%;object-fit:contain;border-radius:12px;"></div>
+    <div class="demo-note">※ 実際の画面でお見せします</div>
+  </section>
+
+  <!-- ========== Slide 6: デモ② ========== -->
+  <section class="slide slide--demo">
+    <div class="most-important">★ 最重要</div>
+    <div class="demo-header">
+      <div class="demo-badge">DEMO 02</div>
+      <div class="demo-time">約5分</div>
+    </div>
+    <h1>SNS自動化を、実例で見る</h1>
+    <div class="demo-flow">
+      Mottoデザインスクールの<br><span style="color: var(--orange);">毎日自動投稿</span>、その実運用の裏側をお見せします
+    </div>
+    <div class="demo-screenshot" style="padding:0;border:none;overflow:hidden;background:#fff;"><img src="assets/demo2-instagram.png" alt="Instagram自動投稿フィード" style="width:100%;height:100%;object-fit:contain;border-radius:12px;"></div>
+  </section>
+
+  <!-- ========== Slide 7: システム構成図 ========== -->
+  <section class="slide slide--arch">
+    <h1>【デモ②】裏側のシステム構成</h1>
+    <div class="arch-diagram">
+      <svg class="arch-svg" viewBox="0 0 1400 520" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,6 L0,12 z" fill="#E8833A"/>
+          </marker>
+        </defs>
+
+        <!-- Step 1: GitHub Actions -->
+        <g>
+          <rect x="40" y="200" width="220" height="120" rx="14" fill="#2F5D4F"/>
+          <text x="150" y="240" text-anchor="middle" fill="white" font-size="20" font-weight="700" font-family="Noto Sans JP">GitHub Actions</text>
+          <text x="150" y="270" text-anchor="middle" fill="#B8D4CB" font-size="16" font-family="Noto Sans JP">毎朝 6:00 起動</text>
+          <text x="150" y="295" text-anchor="middle" fill="#B8D4CB" font-size="14" font-family="Noto Sans JP">(自動スケジューラ)</text>
+        </g>
+
+        <!-- arrow 1 -->
+        <line x1="265" y1="260" x2="335" y2="260" stroke="#E8833A" stroke-width="3" marker-end="url(#arrow)"/>
+
+        <!-- Step 2: Claude Code -->
+        <g>
+          <rect x="340" y="180" width="240" height="160" rx="14" fill="#E8833A"/>
+          <text x="460" y="225" text-anchor="middle" fill="white" font-size="22" font-weight="900" font-family="Noto Sans JP">Claude Code</text>
+          <text x="460" y="260" text-anchor="middle" fill="white" font-size="16" font-family="Noto Sans JP">指示を組み立てる</text>
+          <text x="460" y="285" text-anchor="middle" fill="white" font-size="16" font-family="Noto Sans JP">各ツールに渡す</text>
+          <text x="460" y="315" text-anchor="middle" fill="#FDF2E8" font-size="13" font-family="Noto Sans JP">(司令塔)</text>
+        </g>
+
+        <!-- arrows to tools -->
+        <line x1="585" y1="220" x2="655" y2="90" stroke="#E8833A" stroke-width="3" marker-end="url(#arrow)"/>
+        <line x1="585" y1="260" x2="655" y2="260" stroke="#E8833A" stroke-width="3" marker-end="url(#arrow)"/>
+        <line x1="585" y1="300" x2="655" y2="430" stroke="#E8833A" stroke-width="3" marker-end="url(#arrow)"/>
+
+        <!-- Step 3a: nanobanana -->
+        <g>
+          <rect x="660" y="40" width="240" height="110" rx="14" fill="#FDF2E8" stroke="#E8833A" stroke-width="2"/>
+          <text x="780" y="80" text-anchor="middle" fill="#2B2B2B" font-size="20" font-weight="700" font-family="Noto Sans JP">nanobanana pro</text>
+          <text x="780" y="110" text-anchor="middle" fill="#555" font-size="15" font-family="Noto Sans JP">画像を生成</text>
+          <text x="780" y="132" text-anchor="middle" fill="#888" font-size="13" font-family="Noto Sans JP">(AI画像)</text>
+        </g>
+
+        <!-- Step 3b: Veo -->
+        <g>
+          <rect x="660" y="205" width="240" height="110" rx="14" fill="#FDF2E8" stroke="#E8833A" stroke-width="2"/>
+          <text x="780" y="245" text-anchor="middle" fill="#2B2B2B" font-size="20" font-weight="700" font-family="Noto Sans JP">Veo</text>
+          <text x="780" y="275" text-anchor="middle" fill="#555" font-size="15" font-family="Noto Sans JP">動画を生成</text>
+          <text x="780" y="297" text-anchor="middle" fill="#888" font-size="13" font-family="Noto Sans JP">(AI動画)</text>
+        </g>
+
+        <!-- Step 3c: Claude text -->
+        <g>
+          <rect x="660" y="370" width="240" height="110" rx="14" fill="#FDF2E8" stroke="#E8833A" stroke-width="2"/>
+          <text x="780" y="410" text-anchor="middle" fill="#2B2B2B" font-size="20" font-weight="700" font-family="Noto Sans JP">Claude (文章)</text>
+          <text x="780" y="440" text-anchor="middle" fill="#555" font-size="15" font-family="Noto Sans JP">キャプション生成</text>
+          <text x="780" y="462" text-anchor="middle" fill="#888" font-size="13" font-family="Noto Sans JP">(AI文章)</text>
+        </g>
+
+        <!-- arrows to SNS -->
+        <line x1="905" y1="95" x2="1055" y2="220" stroke="#E8833A" stroke-width="3" marker-end="url(#arrow)"/>
+        <line x1="905" y1="260" x2="1055" y2="260" stroke="#E8833A" stroke-width="3" marker-end="url(#arrow)"/>
+        <line x1="905" y1="425" x2="1055" y2="300" stroke="#E8833A" stroke-width="3" marker-end="url(#arrow)"/>
+
+        <!-- Step 4: SNS -->
+        <g>
+          <rect x="1060" y="180" width="280" height="160" rx="14" fill="#2F5D4F"/>
+          <text x="1200" y="225" text-anchor="middle" fill="white" font-size="22" font-weight="900" font-family="Noto Sans JP">自動投稿</text>
+          <text x="1200" y="260" text-anchor="middle" fill="#B8D4CB" font-size="16" font-family="Noto Sans JP">Instagram</text>
+          <text x="1200" y="285" text-anchor="middle" fill="#B8D4CB" font-size="16" font-family="Noto Sans JP">ブログ</text>
+          <text x="1200" y="315" text-anchor="middle" fill="#E8833A" font-size="14" font-weight="700" font-family="Noto Sans JP">(毎朝配信)</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ========== Slide 8: ツールの役割とコスト ========== -->
+  <section class="slide slide--cost">
+    <h1>各ツールの役割とコスト（月額目安）</h1>
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th style="width: 22%;">ツール</th>
+          <th style="width: 48%;">役割</th>
+          <th style="width: 30%;">月額目安</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tool-name">Claude Code</td>
+          <td>全体の司令塔。指示を組み立て、各ツールを動かす</td>
+          <td class="price">$20〜 / 月<br><span style="font-size:18px;font-weight:400;color:#888;">(約3,000円〜)</span></td>
+        </tr>
+        <tr>
+          <td class="tool-name">nanobanana pro</td>
+          <td>投稿用の画像（サムネ・図解）をAI生成</td>
+          <td class="price">$20〜 / 月</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Veo</td>
+          <td>リール用の短尺動画をAI生成</td>
+          <td class="price">従量 $10〜 / 月</td>
+        </tr>
+        <tr>
+          <td class="tool-name">GitHub Actions</td>
+          <td>毎朝決まった時間にスイッチを押してくれる自動実行</td>
+          <td class="price">無料枠内で運用OK</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="cost-note">※ 2026年4月時点の目安。使い方・規模によって変動します。</div>
+  </section>
+
+  <!-- ========== Slide 9: デモ③ ========== -->
+  <section class="slide slide--demo">
+    <div class="demo-header">
+      <div class="demo-badge">DEMO 03</div>
+      <div class="demo-time">約4分</div>
+    </div>
+    <h1>業務の仕組み化</h1>
+    <div class="demo-flow">
+      Excelデータ<span class="arrow">→</span>自動で読み込み<span class="arrow">→</span>集計・整形して出力
+    </div>
+    <div class="demo-screenshot" style="padding:0;border:none;overflow:hidden;background:#fff;"><img src="assets/demo3-excel.png" alt="Excel自動処理画面" style="width:100%;height:100%;object-fit:contain;border-radius:12px;"></div>
+    <div class="demo-note">「同じ作業を毎月やっている」を、Claudeに任せる</div>
+  </section>
+
+  <!-- ========== Slide 10: 3デモのまとめ ========== -->
+  <section class="slide slide--summary">
+    <h1>3つのデモで伝えたいこと</h1>
+    <div class="punch">
+      Claude Code<span class="accent-green">単体</span>でも強い。<br>
+      でも<span class="accent">複数ツールの組合せ</span>で化ける。
+    </div>
+    <div class="sub">「自分の仕事のどこに効くか」を今日持って帰ってください</div>
+  </section>
+
+  <!-- ========== Slide 11: インストール導入 ========== -->
+  <section class="slide slide--install-intro">
+    <div class="section-label" style="margin: 0 auto 40px; display: block; text-align: center; width: fit-content;">第2部：導入サポート</div>
+    <h1>一緒に<br>インストールを進めましょう</h1>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">STEP 01</div>
+        <div class="step-title">Git for Windows<br>をインストール</div>
+        <div class="step-time">約3分</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 02</div>
+        <div class="step-title">Claude Desktop<br>アプリをインストール</div>
+        <div class="step-time">約2分</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 03</div>
+        <div class="step-title">アプリ起動&<br>Sign in</div>
+        <div class="step-time">約1分</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">STEP 04</div>
+        <div class="step-title">Codeタブで<br>フォルダ選択</div>
+        <div class="step-time">約2分</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Slide 12: STEP 01 ========== -->
+  <section class="slide slide--install">
+    <div class="install-left">
+      <div class="install-step-label">STEP 01 / 04</div>
+      <h1>Git for Windows<br>をインストール</h1>
+      <div class="time-badge">所要時間：約3分</div>
+      <ul class="install-actions">
+        <li><span class="url">git-scm.com/downloads/win</span> にアクセス</li>
+        <li>「Click here to download」をクリック</li>
+        <li>インストーラを起動し、<strong>Next を連打</strong>でOK</li>
+      </ul>
+    </div>
+    <div class="install-right">
+      <div class="qr-placeholder" style="padding:10px;background:white;"><img src="assets/qr-git.png" alt="Git for Windows QR" style="width:100%;height:100%;object-fit:contain;"></div>
+      <div class="qr-caption">QRコードでアクセス</div>
+      <div class="qr-url">git-scm.com/downloads/win</div>
+    </div>
+  </section>
+
+  <!-- ========== Slide 13: STEP 02 ========== -->
+  <section class="slide slide--install">
+    <div class="install-left">
+      <div class="install-step-label">STEP 02 / 04</div>
+      <h1>Claude Desktop<br>アプリをインストール</h1>
+      <div class="time-badge">所要時間：約2分</div>
+      <ul class="install-actions">
+        <li><span class="url">claude.com/download</span> にアクセス</li>
+        <li><strong>「Download for Windows」</strong>をクリック</li>
+        <li>ダウンロードした .exe を実行してインストール</li>
+      </ul>
+    </div>
+    <div class="install-right">
+      <div class="qr-placeholder" style="padding:10px;background:white;"><img src="assets/qr-claude.png" alt="Claude Desktop QR" style="width:100%;height:100%;object-fit:contain;"></div>
+      <div class="qr-caption">QRコードでアクセス</div>
+      <div class="qr-url">claude.com/download</div>
+    </div>
+  </section>
+
+  <!-- ========== Slide 14: STEP 03 ========== -->
+  <section class="slide slide--install">
+    <div class="install-left">
+      <div class="install-step-label">STEP 03 / 04</div>
+      <h1>アプリ起動&Sign in</h1>
+      <div class="time-badge">所要時間：約1分</div>
+      <ul class="install-actions">
+        <li>Claude Desktopを起動</li>
+        <li><strong>Claudeアカウント</strong>でログイン</li>
+        <li>上部に3つのタブが出ればOK ↓</li>
+      </ul>
+      <div class="tabs-preview">
+        <div class="tab-item"><div class="tab-name">Chat</div><div class="tab-desc">普通の会話</div></div>
+        <div class="tab-item"><div class="tab-name">Cowork</div><div class="tab-desc">共同編集</div></div>
+        <div class="tab-item highlight"><div class="tab-name">Code ★</div><div class="tab-desc">今日使うのはココ</div></div>
+      </div>
+    </div>
+    <div class="install-right">
+      <div class="qr-placeholder" style="width:420px;height:280px;padding:0;border:2px solid var(--line);overflow:hidden;">
+        <img src="assets/step3-tabs.png" alt="Claude Desktop 3タブ表示" style="width:100%;height:100%;object-fit:contain;background:#fff;">
+      </div>
+      <div class="qr-caption" style="color:var(--orange);">★ 見本はこちら</div>
+    </div>
+  </section>
+
+  <!-- ========== Slide 15: STEP 04 ========== -->
+  <section class="slide slide--install">
+    <div class="install-left">
+      <div class="install-step-label">STEP 04 / 04</div>
+      <h1>Codeタブで<br>フォルダを選択</h1>
+      <div class="time-badge">所要時間：約2分</div>
+      <ul class="install-actions">
+        <li><strong>Code</strong>タブを開く</li>
+        <li>事前に <strong>my-lp</strong> フォルダを作成しておく</li>
+        <li><strong>Local</strong> → <strong>my-lp</strong> フォルダを選択</li>
+      </ul>
+    </div>
+    <div class="install-right">
+      <div class="qr-placeholder" style="width:460px;height:340px;padding:0;border:2px solid var(--line);overflow:hidden;">
+        <img src="assets/step4-code.png" alt="Code→Local→my-lp→Sonnet選択画面" style="width:100%;height:100%;object-fit:contain;background:#fff;">
+      </div>
+      <div class="qr-caption">★ この画面になればOK</div>
+    </div>
+  </section>
+
+  <!-- ========== Slide 16: ワーク① ========== -->
+  <section class="slide slide--work">
+    <div class="work-header">
+      <div class="work-badge">WORK 01</div>
+      <div class="work-time">約3分</div>
+    </div>
+    <h1>ウォームアップ：<br>Claudeに話しかけてみる</h1>
+    <div class="prompt-card">
+      <div class="prompt-num">1</div>
+      <div class="prompt-text">自己紹介して</div>
+    </div>
+    <div class="prompt-card">
+      <div class="prompt-num">2</div>
+      <div class="prompt-text">自分の仕事を分析して</div>
+    </div>
+    <div class="demo-note" style="margin-top:30px;font-size:24px;">まずは「話しかけるだけ」でOK。難しく考えなくて大丈夫です。</div>
+  </section>
+
+  <!-- ========== Slide 17: ワーク② ========== -->
+  <section class="slide slide--work">
+    <div class="most-important">★ メイン</div>
+    <div class="work-header">
+      <div class="work-badge">WORK 02</div>
+      <div class="work-time">約14分</div>
+    </div>
+    <h1>自分のLPを作る</h1>
+    <div class="fill-blanks" style="padding:28px 36px;">
+      <div class="title" style="margin-bottom:14px;">下記をコピーして、3つの空欄を埋めてClaudeに貼り付け</div>
+      <pre style="font-family:'Menlo','Noto Sans JP',monospace;font-size:19px;line-height:1.7;color:#2B2B2B;white-space:pre-wrap;margin:0;background:#FFF8F0;padding:20px 24px;border-radius:10px;border-left:4px solid var(--orange);">私の事業のランディングページ（1ページのWebサイト）を
+作ってください。
+
+・仕事の内容：<span style="color:var(--orange);font-weight:700;">［例：地域の高齢者向けスマホ教室］</span>
+・ターゲット：<span style="color:var(--orange);font-weight:700;">［例：60〜80代の初心者の方］</span>
+・強み：<span style="color:var(--orange);font-weight:700;">［例：マンツーマンでわかるまで教える］</span>
+
+構成：キャッチコピー / 悩みへの共感 / サービス内容 /
+       お客様の声 / お問い合わせ
+デザインは温かみのある配色で、スマホでも読みやすく。</pre>
+    </div>
+    <div class="demo-note" style="margin-top:18px;font-size:22px;">→ Claudeが、あなた専用のLPを1ページで作ってくれます。</div>
+  </section>
+
+  <!-- ========== Slide 18: 1週間ガイド ========== -->
+  <section class="slide slide--week">
+    <div class="section-label" style="background:var(--green-pale);border-color:var(--green);color:var(--green);">第3部：継続サポート</div>
+    <h1>最初の1週間、こう進めると◎</h1>
+    <div class="sub">小さな一歩を、毎日1つずつ。</div>
+    <div class="days-grid">
+      <div class="day-card">
+        <div class="day-label">DAY 1</div>
+        <div class="day-title">今日のLPを<br>開いてみる</div>
+        <div class="day-task">色を1つだけ変えてみよう</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 2</div>
+        <div class="day-title">文言を1箇所<br>書き換える</div>
+        <div class="day-task">「〜を〜に直して」と伝えるだけ</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 3</div>
+        <div class="day-title">セクションを<br>1つ追加</div>
+        <div class="day-task">お問合せ欄 / 実績欄など</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 4</div>
+        <div class="day-title">スマホで<br>見え方を確認</div>
+        <div class="day-task">画面サイズ調整をお願い</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 5</div>
+        <div class="day-title">別の作業を<br>お願いしてみる</div>
+        <div class="day-task">Excel整形や資料作成など</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 6</div>
+        <div class="day-title">身近な人に<br>LPを見せる</div>
+        <div class="day-task">感想をもらって磨く</div>
+      </div>
+      <div class="day-card">
+        <div class="day-label">DAY 7</div>
+        <div class="day-title">公開 or <br>次の挑戦を決める</div>
+        <div class="day-task">迷ったら無料相談へ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== Slide: 1年後の世界 ========== -->
+  <section class="slide slide--future">
+    <h1>1年後、<span class="accent">世界は変わっています</span>。</h1>
+    <div class="future-sub">生成AIは週単位でアップデート。Claude Codeも、昨日の常識が今日には古くなる時代です。</div>
+    <div class="future-cols">
+      <div class="future-col plus">
+        <div class="future-tag">AIを"扱う"側</div>
+        <h3>使いこなせる人は</h3>
+        <ul>
+          <li>資料作成が10分で終わる</li>
+          <li>1人で複数事業を回せる</li>
+          <li>新しい挑戦に時間を使える</li>
+          <li>周りから「どうやってる？」と聞かれる</li>
+        </ul>
+      </div>
+      <div class="future-col minus">
+        <div class="future-tag">AIに"取り残される"側</div>
+        <h3>扱えないままの人は</h3>
+        <ul>
+          <li>変わらず同じ業務に追われる</li>
+          <li>気づけば若手に追い抜かれる</li>
+          <li>クライアントに「古い」と見られる</li>
+          <li>1年で差、2年で決定的に</li>
+        </ul>
+      </div>
+    </div>
+    <div class="future-message">
+      <span class="small">新機能・新モデル・新しい使い方 — 週単位で変わる世界を、独学で追い続けるのは、正直しんどい。</span>
+      <span class="punch">だから、<span class="accent">一緒に追いかけられる環境</span>があると、強い。</span>
+    </div>
+  </section>
+
+  <!-- ========== Slide 20: マンツーマンの強み ========== -->
+  <section class="slide slide--why-us">
+    <h1>マンツーマンだから、<span class="accent">身につく</span>。</h1>
+    <div class="why-sub">他のAIスクールとは、ここが違います。</div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">STRENGTH 01</div>
+        <div class="why-title">完全マンツーマン指導</div>
+        <div class="why-desc">1対1で向き合う対話形式。あなたのペースで、質問し放題。グループの「置いてけぼり」はありません。</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">STRENGTH 02</div>
+        <div class="why-title">対面 or オンライン選択可</div>
+        <div class="why-desc">Tatami Worksでの対面レッスン、もしくはオンラインレッスン。状況に合わせて、あなたに合う形を選べます。</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">STRENGTH 03</div>
+        <div class="why-title">あなたの業務が教材</div>
+        <div class="why-desc">教科書的な学習はしません。あなたの実務そのものを題材に、「今日から使える」AIスキルへ。</div>
+      </div>
+    </div>
+    <div class="why-callout">
+      <span class="callout-text">一般的なAIスクールは<strong>グループ or 動画</strong>中心。学んだことを自分の業務に落とし込むまで、どうしても時間がかかる。</span>
+      <span class="callout-punch">マンツーマンなら、<span class="accent">最初の1時間から、あなたの仕事の話ができる。</span></span>
+    </div>
+  </section>
+
+  <!-- ========== Slide 22: 料金プラン詳細 ========== -->
+  <section class="slide slide--pricing">
+    <div class="pricing-header">
+      <h1>料金プラン（ご参考）</h1>
+      <div class="pricing-sub">スポット相談・目的別コース・月額プランの3段階でご案内しています。</div>
+    </div>
+
+    <!-- スポット相談（お試しの入口） -->
+    <div class="spot-banner">
+      <div class="spot-banner-label-wrap">
+        <div class="spot-banner-label">スポット相談</div>
+        <div class="spot-banner-en">SPOT</div>
+      </div>
+      <div class="spot-banner-divider"></div>
+      <div class="spot-banner-tag">まず1回だけ試したい方へ。<strong>単発OK</strong> ／ オンラインor対面</div>
+      <div class="spot-banner-price">¥20,000<span class="unit">/ 60分</span></div>
+    </div>
+
+    <!-- 目的別コース -->
+    <div class="pricing-section">
+      <div class="pricing-section-head">
+        <div class="pricing-section-label-wrap">
+          <div class="pricing-section-label">目的別コース</div>
+          <div class="pricing-section-en">SKILL-UP COURSES</div>
+        </div>
+        <div class="pricing-section-price">¥150,000<span class="unit">税別・全10回</span></div>
+        <div class="pricing-section-meta">週1回60分 × 全10回（約2.5ヶ月）／ オンラインor対面 ／ チャットサポート・業務ヒアリング付き</div>
+      </div>
+      <div class="courses-grid">
+        <div class="course-card">
+          <div class="course-name">Claude Code</div>
+          <div class="course-desc">業務自動化・アプリ開発を習得。プログラミング未経験でもOK。</div>
+          <div class="course-target">経営者・DX推進者・非エンジニア</div>
+        </div>
+        <div class="course-card">
+          <div class="course-name">AI業務活用</div>
+          <div class="course-desc">ChatGPT/Claudeで日常業務を効率化。メール、資料作成、データ分析。</div>
+          <div class="course-target">全業種・AI初心者</div>
+        </div>
+        <div class="course-card">
+          <div class="course-name">AIデザイン</div>
+          <div class="course-desc">SNS投稿・チラシ・プレゼン資料をAIでプロ品質に。</div>
+          <div class="course-target">店舗オーナー・個人事業主</div>
+        </div>
+        <div class="course-card">
+          <div class="course-name">AI経営者</div>
+          <div class="course-desc">データ分析・市場調査・戦略立案に活用。経営判断の質とスピード向上。</div>
+          <div class="course-target">経営者・マネージャー</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 月額プラン -->
+    <div class="pricing-section">
+      <div class="pricing-section-head">
+        <div class="pricing-section-label-wrap">
+          <div class="pricing-section-label">月額プラン</div>
+          <div class="pricing-section-en">MONTHLY SUPPORT ／ 継続サポート</div>
+        </div>
+        <div class="pricing-section-meta">コース修了後の継続サポートに。定期MTGで確実にAI活用を定着させます。</div>
+      </div>
+      <div class="plans-grid">
+        <div class="plan-card">
+          <div class="plan-tier">ライト</div>
+          <div class="plan-price">¥100,000<span class="unit"> /月</span></div>
+          <div class="plan-tag">まずは気軽に試したい方へ</div>
+          <ul>
+            <li>オンラインMTG 4回/月</li>
+            <li>チャットサポート</li>
+          </ul>
+          <div class="plan-footer">最低3ヶ月〜</div>
+        </div>
+        <div class="plan-card recommended">
+          <div class="plan-badge">おすすめ</div>
+          <div class="plan-tier">ベーシック</div>
+          <div class="plan-price">¥200,000<span class="unit"> /月</span></div>
+          <div class="plan-tag">本格的にAIを導入したい方へ</div>
+          <ul>
+            <li>オンラインMTG 8回/月</li>
+            <li>チャットサポート</li>
+          </ul>
+          <div class="plan-footer">最低3ヶ月〜</div>
+        </div>
+        <div class="plan-card">
+          <div class="plan-tier">プレミアム</div>
+          <div class="plan-price">要相談</div>
+          <div class="plan-tag">業務効率をより高めたい方へ</div>
+          <ul>
+            <li>オンラインMTG 12回/月</li>
+            <li>AI新規事業提案</li>
+            <li>対面コンサル 1回/月</li>
+            <li>チャット優先対応</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pricing-footer">
+      詳細は <strong>無料個別相談</strong> の中で、あなたに合う形をご提案します。
+    </div>
+  </section>
+
+  <!-- ========== Slide 21: 無料相談（メインCTA） ========== -->
+  <section class="slide slide--support">
+    <div class="title-block">
+      <h1>ここから、<span class="accent">一緒に</span>。</h1>
+      <div class="title-sub">まずは無料個別相談（30分）で、あなたの業務を一緒に整理しましょう。</div>
+    </div>
+    <div class="support-hero">
+      <div class="support-hero-left">
+        <div class="hero-badge">FREE / 30分</div>
+        <div class="hero-title">無料個別相談から、<br>始めませんか。</div>
+        <ul class="hero-points">
+          <li>今日のLPを、もう一歩磨きたい</li>
+          <li>自分の業務にどう活かせるか相談したい</li>
+          <li>AI活用の次の一歩を一緒に考える</li>
+        </ul>
+        <div class="hero-desc">オンライン可。押し売りは一切しません。<br>まずは「話す場」として、お気軽にどうぞ。</div>
+        <div class="hero-urgent">
+          <span class="bang">▶</span> 今すぐ予約したい方は、今日この後の時間でも大丈夫です！
+        </div>
+      </div>
+      <div class="support-hero-right">
+        <div class="qr-big" style="padding:14px;background:white;"><img src="assets/qr-timerex.png" alt="無料相談申込みQR" style="width:100%;height:100%;object-fit:contain;"></div>
+        <div class="qr-caption-big">無料相談の<br>お申し込み</div>
+      </div>
+    </div>
+    <div class="support-footnote">
+      料金プランの詳細は<strong>前ページ</strong>をご参照ください。
+    </div>
+  </section>
+
+</div>
+
+<!-- 固定UI -->
+<div class="pagenum" id="pagenum">1 / 19</div>
+<div class="brand">Tatami Works</div>
+<div class="progress" id="progress" style="width: 0%;"></div>
+<div class="help-hint">← → : ページ送り　F : 全画面　Esc : 解除</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const pagenum = document.getElementById('pagenum');
+  const progress = document.getElementById('progress');
+  let current = 0;
+
+  function show(i) {
+    if (i < 0) i = 0;
+    if (i > total - 1) i = total - 1;
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    current = i;
+    pagenum.textContent = (i + 1) + ' / ' + total;
+    progress.style.width = ((i + 1) / total * 100) + '%';
+  }
+
+  function next() { show(current + 1); }
+  function prev() { show(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    else if (e.key === 'f' || e.key === 'F' || e.key === 'F11') {
+      e.preventDefault();
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+    else if (e.key === 'Escape' && document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(total - 1); }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.help-hint')) return;
+    next();
+  });
+
+  show(0);
+</script>
+</body>
+</html>

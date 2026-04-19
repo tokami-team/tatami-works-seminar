@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プラン詳細ガイド | Claude Code & AI活用サポート | Tatami Works</title>
+<meta name="description" content="Tatami WorksのAI活用サポート（月額プラン／目的別コース／スポット相談）の詳細ガイドです。継続サポートで、AIを"使い続ける状態"に。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E8833A;
+    --orange-light: #F4A968;
+    --orange-pale: #FDF2E8;
+    --green: #2F5D4F;
+    --green-light: #4A7D6E;
+    --green-pale: #EAF1EE;
+    --ink: #2B2B2B;
+    --ink-sub: #555;
+    --ink-mute: #888;
+    --line: #E8E4DE;
+    --bg: #FFFFFF;
+    --bg-soft: #FBF8F4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  h1, h2, h3, h4, h5 { line-height: 1.3; color: var(--ink); }
+  h1 { font-weight: 900; }
+  h2 { font-weight: 900; }
+  h3 { font-weight: 700; }
+  h4 { font-weight: 700; }
+
+  /* ===== レイアウト ===== */
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+  .container-wide {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: linear-gradient(135deg, #FDF2E8 0%, #FFFFFF 50%, #EAF1EE 100%);
+    padding: 80px 0 90px;
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-size: 15px;
+    margin-bottom: 28px;
+  }
+  .site-header .brand-row::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--orange);
+    border-radius: 50%;
+  }
+  .site-header .eyebrow {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.14em;
+    padding: 6px 16px;
+    border: 2px solid var(--orange);
+    border-radius: 999px;
+    margin-bottom: 24px;
+  }
+  .site-header h1 {
+    font-size: 46px;
+    line-height: 1.25;
+    margin-bottom: 22px;
+    letter-spacing: -0.01em;
+  }
+  .site-header h1 .accent { color: var(--orange); }
+  .site-header .lead {
+    font-size: 18px;
+    color: var(--ink-sub);
+    max-width: 760px;
+    line-height: 1.85;
+  }
+  .site-header .meta {
+    margin-top: 28px;
+    font-size: 13px;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== セクション共通 ===== */
+  section {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  section.bg-soft { background: var(--bg-soft); }
+  section.bg-green {
+    background: linear-gradient(180deg, var(--green-pale) 0%, #FFFFFF 100%);
+  }
+  .section-label {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.16em;
+    padding: 5px 14px;
+    border: 2px solid var(--orange);
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .section-label.green {
+    color: var(--green);
+    border-color: var(--green);
+  }
+  .section-label.solid {
+    background: var(--orange);
+    color: white;
+  }
+  .section-title {
+    font-size: 34px;
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+  .section-title .accent { color: var(--orange); }
+  .section-title .accent-green { color: var(--green); }
+  .section-sub {
+    font-size: 16px;
+    color: var(--ink-sub);
+    margin-bottom: 50px;
+    max-width: 800px;
+    line-height: 1.85;
+  }
+
+  /* ===== 全体像フロー ===== */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.35fr;
+    gap: 18px;
+    align-items: stretch;
+    margin-top: 30px;
+  }
+  .flow-card {
+    background: white;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 22px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .flow-card .step {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+  }
+  .flow-card .name {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+  .flow-card .price {
+    font-size: 13px;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .flow-card .desc {
+    font-size: 13px;
+    color: var(--ink-sub);
+    line-height: 1.7;
+  }
+  .flow-arrow {
+    align-self: center;
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 22px;
+    padding: 0 8px;
+  }
+  .flow-card.spot { border-color: var(--orange-light); background: #FFF; }
+  .flow-card.course { border-color: var(--green-light); background: #FFF; }
+  .flow-card.monthly {
+    border: 3px solid var(--orange);
+    background: var(--orange-pale);
+    transform: scale(1.04);
+    box-shadow: 0 8px 24px rgba(232,131,58,0.15);
+  }
+  .flow-card.monthly .star {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--orange);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+  .flow-card.monthly .name { color: var(--ink); }
+  .flow-card.monthly .price { font-size: 14px; }
+
+  /* ===== 「なぜ月額プラン」 ===== */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 30px;
+  }
+  .why-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 30px 28px;
+    border-top: 4px solid var(--orange);
+  }
+  .why-card .why-num {
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    margin-bottom: 8px;
+  }
+  .why-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    line-height: 1.45;
+  }
+  .why-card p {
+    font-size: 14.5px;
+    color: var(--ink-sub);
+    line-height: 1.85;
+  }
+
+  /* ===== 月額プランカード（メイン） ===== */
+  .monthly-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    gap: 22px;
+    margin-bottom: 50px;
+    align-items: stretch;
+  }
+  .plan-card-rich {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 36px 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .plan-card-rich.recommended {
+    border: 3px solid var(--orange);
+    box-shadow: 0 10px 32px rgba(232, 131, 58, 0.16);
+    background: white;
+  }
+  .plan-card-rich .plan-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--orange);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 999px;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+  }
+  .plan-card-rich .plan-tier-en {
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.18em;
+    margin-bottom: 4px;
+  }
+  .plan-card-rich .plan-tier {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--green);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .plan-card-rich .plan-price {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.1;
+  }
+  .plan-card-rich .plan-price .unit {
+    font-size: 14px;
+    color: var(--ink-sub);
+    font-weight: 500;
+  }
+  .plan-card-rich .plan-tag {
+    font-size: 14px;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .plan-card-rich .block {
+    margin-bottom: 22px;
+  }
+  .plan-card-rich h5 {
+    font-size: 12px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .plan-card-rich h5::before {
+    content: "";
+    width: 14px;
+    height: 2px;
+    background: var(--green);
+  }
+  .plan-card-rich .includes {
+    list-style: none;
+  }
+  .plan-card-rich .includes li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 14.5px;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .plan-card-rich .includes li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: white;
+    background: var(--orange);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+  }
+  .plan-card-rich .schedule {
+    background: var(--bg-soft);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--ink-sub);
+    line-height: 1.7;
+  }
+  .plan-card-rich .schedule strong {
+    color: var(--ink);
+  }
+  .plan-card-rich .topics {
+    list-style: none;
+  }
+  .plan-card-rich .topics li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 13.5px;
+    color: var(--ink-sub);
+    margin-bottom: 6px;
+    line-height: 1.65;
+  }
+  .plan-card-rich .topics li::before {
+    content: "•";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    color: var(--orange);
+    font-weight: 900;
+  }
+  .plan-card-rich .milestones {
+    background: var(--green-pale);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .plan-card-rich .milestones .ms-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .plan-card-rich .milestones .ms-row:last-child { margin-bottom: 0; }
+  .plan-card-rich .milestones .ms-when {
+    flex: 0 0 64px;
+    color: var(--green);
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .plan-card-rich .milestones .ms-what {
+    flex: 1;
+    color: var(--ink);
+  }
+  .plan-card-rich .for-who {
+    background: var(--orange-pale);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: auto;
+  }
+  .plan-card-rich .for-who .label {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+  .plan-card-rich .for-who p {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .plan-card-rich .plan-footer {
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-top: 12px;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== 共通サポート ===== */
+  .common-support {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 36px 40px;
+  }
+  .common-support h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .common-support .lead {
+    font-size: 14px;
+    color: var(--ink-sub);
+    margin-bottom: 24px;
+    padding-bottom: 22px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .common-support .cs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .common-support .cs-item {
+    border-left: 3px solid var(--orange);
+    padding-left: 14px;
+  }
+  .common-support .cs-item h4 {
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .common-support .cs-item p {
+    font-size: 13px;
+    color: var(--ink-sub);
+    line-height: 1.7;
+  }
+
+  /* ===== 仮想ケーススタディ ===== */
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-top: 30px;
+  }
+  .case-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px 28px;
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+  }
+  .case-card .case-tag {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+  }
+  .case-card h3 {
+    font-size: 18px;
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+  .case-card .case-sub {
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .case-card .case-section {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  .case-card p {
+    font-size: 13.5px;
+    color: var(--ink-sub);
+    line-height: 1.85;
+    margin-bottom: 14px;
+  }
+  .case-card .case-result {
+    background: var(--green-pale);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: auto;
+  }
+  .case-card .case-result .case-section { color: var(--green); }
+  .case-card .case-result p {
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 0;
+  }
+
+  /* ===== 目的別コース ===== */
+  .course-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 30px 36px;
+    margin-bottom: 50px;
+  }
+  .course-overview .item {
+    border-left: 3px solid var(--green);
+    padding-left: 16px;
+  }
+  .course-overview .item .key {
+    font-size: 12px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .course-overview .item .val {
+    font-size: 16px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .course-detail {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 40px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  }
+  .course-detail .course-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 12px;
+  }
+  .course-detail .course-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .course-detail .course-name .tag {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-pale);
+    padding: 4px 10px;
+    border-radius: 6px;
+    vertical-align: middle;
+    letter-spacing: 0.06em;
+  }
+  .course-detail .course-target {
+    font-size: 12px;
+    color: var(--ink-sub);
+    background: var(--bg-soft);
+    padding: 6px 12px;
+    border-radius: 6px;
+    align-self: center;
+  }
+  .course-detail .course-summary {
+    font-size: 15px;
+    color: var(--ink-sub);
+    line-height: 1.85;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .block-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.16em;
+    margin-bottom: 16px;
+  }
+  .block-title.green {
+    color: var(--green);
+  }
+
+  .phases {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .phase {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 20px 18px;
+    border-top: 4px solid var(--green);
+    display: flex;
+    flex-direction: column;
+  }
+  .phase .phase-label {
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 6px;
+  }
+  .phase .phase-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .phase .week {
+    background: white;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--orange);
+  }
+  .phase .week:last-child { margin-bottom: 0; }
+  .phase .week .week-num {
+    font-size: 10px;
+    color: var(--orange);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .phase .week .week-topic {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  .phase .week .week-desc {
+    font-size: 11.5px;
+    color: var(--ink-sub);
+    line-height: 1.6;
+  }
+
+  .outcomes {
+    background: var(--green-pale);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 18px;
+  }
+  .outcomes h4 {
+    font-size: 15px;
+    color: var(--green);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .outcomes h4::before {
+    content: "✓";
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+  }
+  .outcomes ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 24px;
+  }
+  .outcomes ul li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .outcomes ul li::before {
+    content: "▶";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--green);
+    font-size: 9px;
+    line-height: 2.2;
+  }
+  .course-bridge {
+    background: var(--orange-pale);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .course-bridge strong { color: var(--orange); }
+
+  /* ===== スポット相談 ===== */
+  .spot-card {
+    background: white;
+    border: 2px solid var(--orange-light);
+    border-radius: 18px;
+    padding: 36px 40px;
+  }
+  .spot-card .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .spot-card .head .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    background: var(--orange);
+    padding: 5px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.1em;
+  }
+  .spot-card .head h3 {
+    font-size: 20px;
+    margin-top: 12px;
+  }
+  .spot-card .head .price {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--orange);
+  }
+  .spot-card .head .price .unit {
+    font-size: 13px;
+    color: var(--ink-sub);
+    font-weight: 500;
+    margin-left: 6px;
+  }
+  .spot-card .body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .spot-card .body h4 {
+    font-size: 13px;
+    color: var(--orange);
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--orange-pale);
+  }
+  .spot-card ul {
+    list-style: none;
+  }
+  .spot-card ul li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 7px;
+    line-height: 1.7;
+  }
+  .spot-card ul li::before {
+    content: "▶";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--orange);
+    font-size: 9px;
+    line-height: 2.1;
+  }
+
+  /* ===== FAQ ===== */
+  .faq-list {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 32px;
+    margin-top: 30px;
+  }
+  .faq-item {
+    border-bottom: 1px dashed var(--line);
+    padding: 22px 0;
+  }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-item .q {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+    padding-left: 28px;
+    position: relative;
+  }
+  .faq-item .q::before {
+    content: "Q";
+    position: absolute;
+    left: 0;
+    top: -2px;
+    color: white;
+    background: var(--orange);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .faq-item .a {
+    font-size: 14px;
+    color: var(--ink-sub);
+    line-height: 1.85;
+    padding-left: 28px;
+    position: relative;
+  }
+  .faq-item .a::before {
+    content: "A";
+    position: absolute;
+    left: 0;
+    top: -2px;
+    color: var(--green);
+    background: var(--green-pale);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== CTA ===== */
+  .cta-section {
+    background: linear-gradient(135deg, #FDF2E8 0%, #FFFFFF 50%, #EAF1EE 100%);
+    padding: 90px 0 100px;
+    text-align: center;
+  }
+  .cta-section .cta-badge {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 999px;
+    letter-spacing: 0.14em;
+    margin-bottom: 22px;
+  }
+  .cta-section h2 {
+    font-size: 38px;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .cta-section h2 .accent { color: var(--orange); }
+  .cta-section .cta-lead {
+    font-size: 17px;
+    color: var(--ink-sub);
+    max-width: 660px;
+    margin: 0 auto 36px;
+    line-height: 1.85;
+  }
+  .cta-card {
+    background: white;
+    border: 2px solid var(--orange);
+    border-radius: 18px;
+    padding: 40px;
+    max-width: 720px;
+    margin: 0 auto;
+    box-shadow: 0 8px 28px rgba(232, 131, 58, 0.12);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+    text-align: left;
+  }
+  .cta-card .cta-info h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .cta-card .cta-info p {
+    font-size: 14px;
+    color: var(--ink-sub);
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+  .cta-card .cta-info .cta-button {
+    display: inline-block;
+    background: var(--orange);
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 8px;
+    letter-spacing: 0.04em;
+  }
+  .cta-card .qr-wrap {
+    width: 160px;
+    text-align: center;
+  }
+  .cta-card .qr-wrap img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 6px;
+    background: white;
+  }
+  .cta-card .qr-wrap .qr-cap {
+    font-size: 12px;
+    color: var(--ink-sub);
+    margin-top: 8px;
+  }
+
+  /* ===== フッター ===== */
+  footer {
+    background: var(--ink);
+    color: #ccc;
+    padding: 36px 0;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  footer .brand-foot {
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  footer a { color: var(--orange-light); }
+
+  /* ===== レスポンシブ ===== */
+  @media (max-width: 860px) {
+    .site-header { padding: 56px 0 64px; }
+    .site-header h1 { font-size: 30px; }
+    .site-header .lead { font-size: 15px; }
+    section { padding: 56px 0; }
+    .section-title { font-size: 24px; }
+    .flow-grid { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); padding: 6px 0; }
+    .flow-card.monthly { transform: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .monthly-grid { grid-template-columns: 1fr; }
+    .plan-card-rich.recommended { transform: none; }
+    .common-support { padding: 26px 22px; }
+    .common-support .cs-grid { grid-template-columns: 1fr; gap: 18px; }
+    .case-grid { grid-template-columns: 1fr; }
+    .course-overview { grid-template-columns: 1fr; padding: 24px; }
+    .course-detail { padding: 26px 22px; }
+    .phases { grid-template-columns: 1fr; }
+    .outcomes ul { grid-template-columns: 1fr; }
+    .spot-card { padding: 26px 22px; }
+    .spot-card .body { grid-template-columns: 1fr; gap: 22px; }
+    .faq-list { padding: 4px 22px; }
+    .cta-card { grid-template-columns: 1fr; text-align: center; padding: 28px 22px; }
+    .cta-card .qr-wrap { margin: 0 auto; }
+    .cta-section h2 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== ヘッダー ============== -->
+<header class="site-header">
+  <div class="container">
+    <div class="brand-row">Tatami Works</div>
+    <span class="eyebrow">セミナー参加者向け資料</span>
+    <h1>AIを<span class="accent">"使い続ける状態"</span>へ。<br>継続サポート プラン詳細ガイド</h1>
+    <p class="lead">
+      AI活用の本当の壁は「学ぶこと」ではなく、<strong>使い続け、組織に根付かせること</strong>です。
+      Tatami Worksでは、<strong>月額プラン（継続サポート）</strong>を中心に、
+      コース・スポット相談を組み合わせて、あなたの業務にAIを定着させます。
+      本資料では、それぞれのプランで何ができるようになるかを具体的にまとめました。
+    </p>
+    <p class="meta">無料個別相談の前にお目通しいただくと、相談がよりスムーズになります。</p>
+  </div>
+</header>
+
+<!-- ============== 全体像 ============== -->
+<section>
+  <div class="container">
+    <span class="section-label">全体像</span>
+    <h2 class="section-title">選べる3つの入口。中心は、<span class="accent">月額プラン</span>。</h2>
+    <p class="section-sub">
+      「継続サポート（月額プラン）」を中心に、スキル習得（コース）・単発相談（スポット）の3つの入口をご用意しています。
+      <strong>どこから始めても、組み合わせてもOK</strong>です。順番はありません。<br>
+      最も成果につながるのは、継続的に伴走する<strong style="color:var(--orange);">月額プラン</strong>。コース・スポットは独立してご利用いただくこともできます。
+    </p>
+
+    <div class="flow-grid">
+      <div class="flow-card spot">
+        <div class="step">OPTION A</div>
+        <div class="name">スポット相談</div>
+        <div class="price">¥20,000 / 60分</div>
+        <div class="desc">単発OK。1回だけ試したい方に。</div>
+      </div>
+      <div class="flow-card course">
+        <div class="step">OPTION B</div>
+        <div class="name">目的別コース</div>
+        <div class="price">¥150,000 税別 / 全10回</div>
+        <div class="desc">週1回×10回で、業務に効くスキルを体系的に習得。</div>
+      </div>
+      <div class="flow-card monthly">
+        <div class="star">★ 最もおすすめ ／ 本命</div>
+        <div class="step">OPTION C</div>
+        <div class="name">月額プラン（継続サポート）</div>
+        <div class="price">¥100,000〜 / 月</div>
+        <div class="desc">定期MTG + チャットで伴走。AI活用を組織に根付かせ、進化に追従し続ける。</div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;background:white;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;padding:20px 26px;">
+      <div style="font-size:12px;color:var(--green);font-weight:700;letter-spacing:0.14em;margin-bottom:6px;">FORMAT ／ 実施方法（全プラン共通）</div>
+      <p style="font-size:14px;color:var(--ink);line-height:1.85;">
+        すべてのプラン（スポット相談・コース・月額プラン）で、以下のいずれかからお選びいただけます。
+        <strong>① オンライン</strong>（Zoom／Google Meet等）／
+        <strong>② 対面（Tatami Works／千歳船橋）</strong>追加料金なし／
+        <strong>③ 御社訪問</strong>追加の出張費にて対応可。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== なぜ月額プランか ============== -->
+<section class="bg-soft">
+  <div class="container">
+    <span class="section-label">WHY MONTHLY</span>
+    <h2 class="section-title">なぜ、<span class="accent">月額プラン</span>を一番おすすめするのか。</h2>
+    <p class="section-sub">
+      AI活用は「身につけて終わり」ではありません。週単位でモデルが変わり、業務との接点も増え続けます。
+      だからこそ<strong>継続的に伴走するパートナー</strong>がいる方が、成果は段違いに大きくなります。
+    </p>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-num">REASON 01</div>
+        <h3>AIの進化に、ひとりで追いつくのはしんどい。</h3>
+        <p>
+          新モデル・新機能・新しい使い方は週単位で出ます。月額プランなら、最新動向を毎週キャッチアップしながら、
+          <strong>あなたの業務に効くものだけ</strong>を選んで導入できます。
+        </p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">REASON 02</div>
+        <h3>学んだスキルは、使い続けないと忘れる。</h3>
+        <p>
+          単発で学んでも、現場で困った瞬間にすぐ相談できる相手がいないと続きません。
+          月額プランは<strong>「困った時、明日聞ける」</strong>の安心感が成果を生みます。
+        </p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">REASON 03</div>
+        <h3>個人スキルから、組織能力へ広げられる。</h3>
+        <p>
+          AI活用は1人で完結しません。チームへの展開、社内ルール作り、ナレッジ共有まで、
+          <strong>組織にAIを根付かせる</strong>過程を一緒に設計します。
+        </p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">REASON 04</div>
+        <h3>新しい挑戦に、伴走者がいると強い。</h3>
+        <p>
+          自動化、カスタムアシスタント、新規事業──AI活用の幅は広がり続けます。
+          毎月の壁打ち相手がいることで、<strong>挑戦の打席数が圧倒的に増えます</strong>。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 月額プラン詳細（メインセクション） ============== -->
+<section class="bg-green">
+  <div class="container-wide">
+    <span class="section-label solid">MONTHLY PLAN ／ 継続サポート</span>
+    <h2 class="section-title">月額プラン詳細</h2>
+    <p class="section-sub">
+      ご利用人数・課題感に応じて3段階。<strong>最低3ヶ月から</strong>のご契約となります（途中でのプラン変更可）。
+      MTGは<strong>オンライン／対面（Tatami Works）／御社訪問（出張費別途）</strong>からお選びいただけます。<br>
+      <strong style="color:var(--orange);">※ コースの受講は必須ではありません。いきなり月額プランからのスタートも歓迎です。</strong>基礎から伴走する形で進めます。
+    </p>
+
+    <div class="monthly-grid">
+      <!-- ライト -->
+      <div class="plan-card-rich">
+        <div class="plan-tier-en">LIGHT</div>
+        <div class="plan-tier">ライト</div>
+        <div class="plan-price">¥100,000<span class="unit"> /月（税別）</span></div>
+        <div class="plan-tag">まずは気軽に、習慣として続けたい方へ</div>
+
+        <div class="block">
+          <h5>含まれるサポート</h5>
+          <ul class="includes">
+            <li>MTG 4回 / 月（オンライン or 対面）</li>
+            <li>期間中チャットサポート</li>
+            <li>新ツール・新モデル情報の共有</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h5>月の活用イメージ</h5>
+          <div class="schedule">
+            <strong>週1回 × 60分</strong>のMTGで、その週のAI活用テーマを1つずつ前進。<br>
+            合間はチャットで「これどうやる？」を都度相談。<br>
+            <span style="font-size:12px;color:var(--ink-mute);">※ 対面（Tatami Works）／御社訪問（出張費別途）も選択可。</span>
+          </div>
+        </div>
+
+        <div class="block">
+          <h5>こんな相談ができます</h5>
+          <ul class="topics">
+            <li>今週試したプロンプトのレビュー・改善</li>
+            <li>業務でつまずいたポイントの打開策</li>
+            <li>議事録・メール・資料作成の効率化</li>
+            <li>新しいツール・モデルのキャッチアップ</li>
+            <li>業務でのAI活用シーンの拡張</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h5>到達イメージ</h5>
+          <div class="milestones">
+            <div class="ms-row">
+              <div class="ms-when">3ヶ月</div>
+              <div class="ms-what">日常業務の中でAIを使う習慣が定着</div>
+            </div>
+            <div class="ms-row">
+              <div class="ms-when">6ヶ月</div>
+              <div class="ms-what">主要業務の3割程度がAI前提のフローに</div>
+            </div>
+            <div class="ms-row">
+              <div class="ms-when">12ヶ月</div>
+              <div class="ms-what">自分なりの「AI活用パターン」が確立</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="for-who">
+          <div class="label">こんな方に</div>
+          <p>個人事業主、フリーランス、コース修了後に習慣化したい方。少人数の小規模事業者。</p>
+        </div>
+        <div class="plan-footer">最低契約期間 3ヶ月〜</div>
+      </div>
+
+      <!-- ベーシック（おすすめ） -->
+      <div class="plan-card-rich recommended">
+        <div class="plan-badge">★ 最も選ばれているプラン</div>
+        <div class="plan-tier-en">BASIC</div>
+        <div class="plan-tier">ベーシック</div>
+        <div class="plan-price">¥200,000<span class="unit"> /月（税別）</span></div>
+        <div class="plan-tag">本格的にAIで業務を変えたい方へ</div>
+
+        <div class="block">
+          <h5>含まれるサポート</h5>
+          <ul class="includes">
+            <li>MTG 8回 / 月（オンライン or 対面）</li>
+            <li>期間中チャットサポート</li>
+            <li>新ツール・新モデル情報の共有</li>
+            <li>業務オペレーション設計サポート</li>
+            <li>カスタムアシスタント構築サポート</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h5>月の活用イメージ</h5>
+          <div class="schedule">
+            <strong>週2回 × 60分</strong>で、複数の業務テーマを並行して進行。<br>
+            1つは「業務改善」、もう1つは「新しい挑戦」のように、攻守バランスよく。<br>
+            <span style="font-size:12px;color:var(--ink-mute);">※ 対面（Tatami Works）／御社訪問（出張費別途）も選択可。</span>
+          </div>
+        </div>
+
+        <div class="block">
+          <h5>こんな相談ができます</h5>
+          <ul class="topics">
+            <li>業務オペレーションそのものの再設計</li>
+            <li>複数業務を並行してAI化（営業・経理・マーケ等）</li>
+            <li>カスタムGPT／自社専用アシスタント構築</li>
+            <li>チームメンバーへの展開・育成プラン</li>
+            <li>月次レポート・分析の自動化</li>
+            <li>業務マニュアル・ナレッジのAI化</li>
+            <li>新規施策のプロトタイピング</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h5>到達イメージ</h5>
+          <div class="milestones">
+            <div class="ms-row">
+              <div class="ms-when">3ヶ月</div>
+              <div class="ms-what">複数業務でAI化が並行で進行</div>
+            </div>
+            <div class="ms-row">
+              <div class="ms-when">6ヶ月</div>
+              <div class="ms-what">チーム単位での運用が定着・部門改革が進む</div>
+            </div>
+            <div class="ms-row">
+              <div class="ms-when">12ヶ月</div>
+              <div class="ms-what">オペレーションコストが目に見えて低下</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="for-who">
+          <div class="label">こんな方に</div>
+          <p>本気で業務オペレーションを変えたい経営者・部門責任者。10〜50名規模の企業で多くお選びいただきます。</p>
+        </div>
+        <div class="plan-footer">最低契約期間 3ヶ月〜</div>
+      </div>
+
+      <!-- プレミアム -->
+      <div class="plan-card-rich">
+        <div class="plan-tier-en">PREMIUM</div>
+        <div class="plan-tier">プレミアム</div>
+        <div class="plan-price">要相談<span class="unit"></span></div>
+        <div class="plan-tag">経営の中核にAIを据えたい方へ</div>
+
+        <div class="block">
+          <h5>含まれるサポート</h5>
+          <ul class="includes">
+            <li>MTG 12回 / 月（オンライン or 対面）</li>
+            <li>対面コンサル 1回 / 月（Tatami Works or 御社訪問※）</li>
+            <li>AI新規事業提案</li>
+            <li>チャット優先対応</li>
+            <li>経営会議・役員会への同席（応相談）</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h5>月の活用イメージ</h5>
+          <div class="schedule">
+            <strong>週3回MTG＋月1対面</strong>で、業務改善・組織改革・新規事業を同時並行。<br>
+            経営層と現場の両方に深く入り込みます。<br>
+            <span style="font-size:12px;color:var(--ink-mute);">※ 御社訪問の場合は別途出張費をいただきます。</span>
+          </div>
+        </div>
+
+        <div class="block">
+          <h5>こんな相談ができます</h5>
+          <ul class="topics">
+            <li>経営戦略レベルでのAI活用設計</li>
+            <li>新規事業のAI企画・PoC・立ち上げ支援</li>
+            <li>全社AI展開のロードマップ策定</li>
+            <li>採用・組織設計へのAI組込</li>
+            <li>投資判断・市場分析のサポート</li>
+            <li>役員会・経営会議への同席・提案</li>
+            <li>社内ナレッジのAI化（RAG構築）</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h5>到達イメージ</h5>
+          <div class="milestones">
+            <div class="ms-row">
+              <div class="ms-when">3ヶ月</div>
+              <div class="ms-what">全社AI活用ロードマップが完成・着手</div>
+            </div>
+            <div class="ms-row">
+              <div class="ms-when">6ヶ月</div>
+              <div class="ms-what">新規事業のPoCが動き出す</div>
+            </div>
+            <div class="ms-row">
+              <div class="ms-when">12ヶ月</div>
+              <div class="ms-what">AIネイティブな組織体制への移行</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="for-who">
+          <div class="label">こんな方に</div>
+          <p>AIを経営の中核に据えたい企業、新規事業立ち上げを検討中の方、全社規模での変革を進めたい経営者。</p>
+        </div>
+        <div class="plan-footer">最低契約期間 3ヶ月〜</div>
+      </div>
+    </div>
+
+    <!-- 共通サポート -->
+    <div class="common-support">
+      <h3>月額プランならではの3つの強み</h3>
+      <p class="lead">月額プランは「ただの定例MTG」ではありません。標準カリキュラムの目的別コースとは違い、<strong>あなたの業務に合わせてフルカスタマイズ</strong>するのが最大の特徴です。</p>
+      <div class="cs-grid">
+        <div class="cs-item">
+          <h4>① 御社業務にフルカスタマイズ</h4>
+          <p>決まったカリキュラムはありません。御社の業務・課題・組織状況に合わせて、毎月のテーマを完全オーダーメイドで設計します。<strong>ここが目的別コースとの最大の違いです。</strong></p>
+        </div>
+        <div class="cs-item">
+          <h4>② チャット即応サポート</h4>
+          <p>MTGの合間、現場で困った瞬間にチャットで相談可能。「今日試したい」に応えます。</p>
+        </div>
+        <div class="cs-item">
+          <h4>③ 最新動向の継続キャッチアップ</h4>
+          <p>新モデル・新機能・新ツールの情報を、あなたの業務に紐づけて毎月共有します。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 仮想ケーススタディ ============== -->
+<section>
+  <div class="container">
+    <span class="section-label green">CASE STUDIES</span>
+    <h2 class="section-title">月額プランの<span class="accent-green">活用イメージ</span></h2>
+    <p class="section-sub">
+      実際にどう使われるか、3つの典型ケースをご紹介します。あなたの状況に近いものはありますか？
+    </p>
+
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="case-tag">CASE 01 ／ ライトプラン</div>
+        <h3>個人事業主・コンサルタントA氏</h3>
+        <div class="case-sub">1人で全業務を回す。資料作成・リサーチに時間を取られていた。</div>
+
+        <div class="case-section">利用イメージ</div>
+        <p>毎週金曜の60分MTGで「今週やること」を整理。提案書のたたき台・市場リサーチ・SNS投稿の量産をAIに任せる仕組みを順次構築。</p>
+
+        <div class="case-result">
+          <div class="case-section">6ヶ月後の到達点</div>
+          <p>週10時間の業務時間圧縮。新規案件への着手スピードが2倍に。</p>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag">CASE 02 ／ ベーシックプラン</div>
+        <h3>30名規模B社の経営者</h3>
+        <div class="case-sub">DXを進めたいが、誰にどう任せるか分からない状態だった。</div>
+
+        <div class="case-section">利用イメージ</div>
+        <p>週2回のMTGで、営業・マーケ・バックオフィス各部門のAI化を並行で推進。社内勉強会の設計・自社専用アシスタントの構築まで伴走。</p>
+
+        <div class="case-result">
+          <div class="case-section">12ヶ月後の到達点</div>
+          <p>営業オペレーション自動化でCV30%改善。社内にAI推進担当が育つ。</p>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag">CASE 03 ／ プレミアムプラン</div>
+        <h3>100名規模C社の経営層</h3>
+        <div class="case-sub">既存事業に加えて、AI領域での新規事業を検討中。</div>
+
+        <div class="case-section">利用イメージ</div>
+        <p>週3回MTG＋月1対面で、経営会議への同席・新規事業のPoC・社内ナレッジのRAG化まで並走。投資判断・採用設計にもAIを組込む。</p>
+
+        <div class="case-result">
+          <div class="case-section">12ヶ月後の到達点</div>
+          <p>新規事業1本がローンチ。AI推進専門チームを社内に新設。</p>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:var(--ink-mute);text-align:center;margin-top:24px;">
+      ※ 上記は典型的な活用パターンを示したイメージケースです。
+    </p>
+  </div>
+</section>
+
+<!-- ============== FAQ ============== -->
+<section class="bg-soft">
+  <div class="container">
+    <span class="section-label">FAQ</span>
+    <h2 class="section-title">月額プランのよくあるご質問</h2>
+    <p class="section-sub">ご相談前によく聞かれることをまとめました。その他のご質問は無料相談でお気軽にどうぞ。</p>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="q">途中でプランを変更できますか？</div>
+        <div class="a">はい、可能です。「ライトで始めて、業務範囲が広がったらベーシックへ」「忙しい時期だけプレミアムへ」など、月単位で柔軟に変更いただけます。</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">最低契約期間はありますか？</div>
+        <div class="a">3ヶ月からのご契約となります。AI活用は短期では成果が見えにくいため、最低3ヶ月で「定着の入口」までご一緒します。3ヶ月以降は月単位での継続/解約が可能です。</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">どんな業界の方が利用していますか？</div>
+        <div class="a">士業、コンサルタント、店舗経営、製造業、IT企業、教育、医療、行政など、業界は問いません。共通しているのは「業務にAIを本気で組込みたい」という方です。</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">自分の課題が整理できていなくても大丈夫ですか？</div>
+        <div class="a">大丈夫です。むしろ初回〜2回目のMTGで「課題の整理」自体を一緒に行うケースが大半です。漠然とした状態でご相談いただいて構いません。</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">コースを受けずに、いきなり月額プランから始められますか？</div>
+        <div class="a">はい、可能です。基礎から伴走する形で進めます。ただ、ある程度AI活用の前提知識があった方が成果は早いため、目的別コースを先に受講される方も多いです。</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">チームメンバーも一緒に参加できますか？</div>
+        <div class="a">可能です。MTGには複数名でご参加いただけます（人数による追加料金なし）。チーム全体でAI活用を進める方には、特にベーシック・プレミアムが向いています。</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">セキュリティ面が心配です。</div>
+        <div class="a">機密情報の取り扱い、社内データの扱い方、安全に使えるツールの選定など、初回MTGで必ず整理します。NDAの締結も対応可能です。</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">対面とオンラインを選べますか？</div>
+        <div class="a">はい、<strong>すべてのプラン（スポット相談・コース・月額プラン）で選択可能</strong>です。①オンライン（Zoom／Google Meet）、②対面（Tatami Works／千歳船橋）は追加料金なし、③御社訪問は別途出張費にて対応いたします。回によって使い分けることも可能です。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 目的別コース ============== -->
+<section>
+  <div class="container">
+    <span class="section-label">SKILL-UP COURSES</span>
+    <h2 class="section-title">目的別コース（全10回）</h2>
+    <p class="section-sub">
+      月額プランの前段階として、または並行して、<strong>体系的にスキルを身につけたい方</strong>向けの10回コース。
+      週1回60分 × 全10回（約2.5ヶ月）の完全マンツーマン。4つのコースから、ご自身の役割と目的に合うものをお選びいただけます。<br>
+      <strong style="color:var(--green);">カリキュラムは標準化されており、確実に基礎力を身につけることを目的としています。</strong>
+      御社業務へのフルカスタマイズ伴走をご希望の場合は、<strong style="color:var(--orange);">月額プラン（継続サポート）</strong>をご検討ください。
+    </p>
+
+    <div class="course-overview">
+      <div class="item">
+        <div class="key">FORMAT</div>
+        <div class="val">週1回60分 × 全10回（約2.5ヶ月）</div>
+      </div>
+      <div class="item">
+        <div class="key">STYLE</div>
+        <div class="val">完全マンツーマン／オンライン・対面（Tatami Works）・御社訪問（出張費別途）</div>
+      </div>
+      <div class="item">
+        <div class="key">FEE</div>
+        <div class="val">¥150,000（税別）／一括</div>
+      </div>
+      <div class="item">
+        <div class="key">SUPPORT</div>
+        <div class="val">期間中チャットサポート＋業務ヒアリング付き</div>
+      </div>
+    </div>
+
+    <!-- ===== Claude Code コース ===== -->
+    <div class="course-detail">
+      <div class="course-head">
+        <div class="course-name">Claude Code コース<span class="tag">DX推進・自動化</span></div>
+        <div class="course-target">対象：経営者・DX推進者・非エンジニア</div>
+      </div>
+      <p class="course-summary">
+        プログラミング未経験からでも、Claude Codeを使って<strong>業務の自動化と簡易アプリ開発</strong>ができるようになるコース。
+        セミナーでお見せしたデモ（リサーチ自動化／Instagram運用／Excel処理）を、ご自身の業務に置き換えて再現できる状態を目指します。
+      </p>
+
+      <div class="block-title green">CURRICULUM ／ カリキュラム標準モデル</div>
+      <div class="phases">
+        <div class="phase">
+          <div class="phase-label">PHASE 1 ／ 第1〜3回</div>
+          <div class="phase-title">導入・基本操作</div>
+          <div class="week">
+            <div class="week-num">WEEK 1</div>
+            <div class="week-topic">Claude Codeの導入・セットアップ</div>
+            <div class="week-desc">環境構築、初期設定、基本コマンドの体験。初めての方でも安心してスタート。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 2-3</div>
+            <div class="week-topic">プロンプト設計と基本操作</div>
+            <div class="week-desc">CLAUDE.md設計、ファイル読み書き、指示の構造化を実践で学ぶ。</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">PHASE 2 ／ 第4〜7回</div>
+          <div class="phase-title">業務自動化の実践</div>
+          <div class="week">
+            <div class="week-num">WEEK 4-5</div>
+            <div class="week-topic">定型業務の自動化</div>
+            <div class="week-desc">定期レポート生成、CSV/Excel処理、メール自動化など実務シナリオで実践。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 6-7</div>
+            <div class="week-topic">外部サービス連携</div>
+            <div class="week-desc">API連携、Slack/Notion/スプレッドシート接続で自動化の幅を広げる。</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">PHASE 3 ／ 第8〜10回</div>
+          <div class="phase-title">アプリ化と定着</div>
+          <div class="week">
+            <div class="week-num">WEEK 8-9</div>
+            <div class="week-topic">業務ツールをアプリ化</div>
+            <div class="week-desc">簡易Webアプリ開発、Git/GitHubの最小限運用を身につける。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 10</div>
+            <div class="week-topic">成果発表・運用設計</div>
+            <div class="week-desc">自走できる体制づくりと継続運用のロードマップ策定。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="outcomes">
+        <h4>修了後にできるようになること</h4>
+        <ul>
+          <li>定型レポートを毎週自動生成できる</li>
+          <li>CSV／Excelデータを指示一つで集計・整形できる</li>
+          <li>定期メール・通知を自動で発信できる</li>
+          <li>Slack／Notion／スプレッドシートと連携した自動化ができる</li>
+          <li>社内向け簡易Webアプリを自分で組める</li>
+          <li>Git/GitHubで成果物を最小限のルールで管理できる</li>
+          <li>新しい業務にも自分でClaude Codeを応用できる</li>
+          <li>外注していた小規模な開発を内製化できる</li>
+        </ul>
+      </div>
+      <div class="course-bridge">
+        <strong>修了後は月額プランへ。</strong>習得したスキルを業務に組込み、定着・拡張する継続サポートに移行する方が大半です。
+      </div>
+    </div>
+
+    <!-- ===== AI業務活用 コース ===== -->
+    <div class="course-detail">
+      <div class="course-head">
+        <div class="course-name">AI業務活用 コース<span class="tag">日常業務効率化</span></div>
+        <div class="course-target">対象：全業種・AI初心者</div>
+      </div>
+      <p class="course-summary">
+        ChatGPT／Claudeを「便利ツール」から「自分の業務の相棒」に育てるコース。
+        メール、議事録、資料作成、データ整理、リサーチなど、<strong>日々の業務の処理速度を数倍に</strong>するワークフローを身につけます。
+      </p>
+
+      <div class="block-title green">CURRICULUM ／ カリキュラム標準モデル</div>
+      <div class="phases">
+        <div class="phase">
+          <div class="phase-label">PHASE 1 ／ 第1〜3回</div>
+          <div class="phase-title">AIツールの基礎</div>
+          <div class="week">
+            <div class="week-num">WEEK 1</div>
+            <div class="week-topic">ChatGPT/Claudeの使い分けと基本操作</div>
+            <div class="week-desc">主要AIツールの特性を理解し、自分の業務に合う選び方を掴む。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 2-3</div>
+            <div class="week-topic">プロンプト設計の型</div>
+            <div class="week-desc">役割・制約・出力フォーマットを整える「効く」プロンプトの書き方。</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">PHASE 2 ／ 第4〜7回</div>
+          <div class="phase-title">日常業務の効率化</div>
+          <div class="week">
+            <div class="week-num">WEEK 4-5</div>
+            <div class="week-topic">文書・メール・議事録・翻訳の自動化</div>
+            <div class="week-desc">日々の文書まわり作業をAIで数倍速く片付ける仕組みを構築。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 6-7</div>
+            <div class="week-topic">資料作成・データ整理・リサーチ</div>
+            <div class="week-desc">PowerPoint/Googleスライドやデータ処理、市場調査への活用。</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">PHASE 3 ／ 第8〜10回</div>
+          <div class="phase-title">専用アシスタントと社内展開</div>
+          <div class="week">
+            <div class="week-num">WEEK 8-9</div>
+            <div class="week-topic">カスタムGPT／Projectsで専用アシスタント構築</div>
+            <div class="week-desc">自分／自社向けの専属AIアシスタントを設計・実装。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 10</div>
+            <div class="week-topic">業務フロー組込・社内展開プラン</div>
+            <div class="week-desc">チームや社内に広げるためのロードマップを策定。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="outcomes">
+        <h4>修了後にできるようになること</h4>
+        <ul>
+          <li>メール下書きを数秒で生成できる</li>
+          <li>議事録を録音/メモから整形・要約できる</li>
+          <li>長文資料・英文を瞬時に要約・翻訳できる</li>
+          <li>提案書・プレゼン資料の構成案をAIに作らせられる</li>
+          <li>ExcelやスプレッドシートのデータをAIで整理できる</li>
+          <li>市場調査・リサーチを数時間→数十分に圧縮できる</li>
+          <li>自社専用のAIアシスタントを自分で構築できる</li>
+          <li>チームに展開するための運用ルールを設計できる</li>
+        </ul>
+      </div>
+      <div class="course-bridge">
+        <strong>修了後は月額プランへ。</strong>個人スキルから組織導入へ広げ、定着させるフェーズに継続サポートが効きます。
+      </div>
+    </div>
+
+    <!-- ===== AIデザイン コース ===== -->
+    <div class="course-detail">
+      <div class="course-head">
+        <div class="course-name">AIデザイン コース<span class="tag">販促・ブランディング</span></div>
+        <div class="course-target">対象：店舗オーナー・個人事業主</div>
+      </div>
+      <p class="course-summary">
+        SNS投稿画像、チラシ、バナー、商品写真、プレゼン資料を<strong>AIでプロ品質に量産</strong>するコース。
+        「外注しないと作れなかった販促物を、自分のお店・事業の手で回し続けられる」状態を目指します。
+      </p>
+
+      <div class="block-title green">CURRICULUM ／ カリキュラム標準モデル</div>
+      <div class="phases">
+        <div class="phase">
+          <div class="phase-label">PHASE 1 ／ 第1〜3回</div>
+          <div class="phase-title">AIデザインの基礎</div>
+          <div class="week">
+            <div class="week-num">WEEK 1</div>
+            <div class="week-topic">AIデザインツールの全体像</div>
+            <div class="week-desc">Canva AI／Midjourney／Ideogramなど主要ツールの特性と選び方。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 2-3</div>
+            <div class="week-topic">ブランド言語化とプロンプト化</div>
+            <div class="week-desc">自店舗／自社のイメージを言語化し、再現性あるプロンプトに落とす。</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">PHASE 2 ／ 第4〜7回</div>
+          <div class="phase-title">販促物を作る</div>
+          <div class="week">
+            <div class="week-num">WEEK 4-5</div>
+            <div class="week-topic">SNS画像・チラシ・バナー制作</div>
+            <div class="week-desc">日常的に必要な販促物を量産できるワークフローを確立。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 6-7</div>
+            <div class="week-topic">商品写真・動画素材・プレゼン資料</div>
+            <div class="week-desc">商品写真の補正・生成、動画リール素材、プレゼン資料をプロ品質で。</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">PHASE 3 ／ 第8〜10回</div>
+          <div class="phase-title">実践と運用定着</div>
+          <div class="week">
+            <div class="week-num">WEEK 8-9</div>
+            <div class="week-topic">自店舗の販促物一式を制作</div>
+            <div class="week-desc">実際の自分のお店／事業の販促物を一式つくる実践演習。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 10</div>
+            <div class="week-topic">継続運用の仕組み化・発表</div>
+            <div class="week-desc">その後も自分で回し続けられる運用ルールを設計。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="outcomes">
+        <h4>修了後にできるようになること</h4>
+        <ul>
+          <li>自店舗のブランドトーンを言語化・再現できる</li>
+          <li>SNS用画像を毎日でも自分で量産できる</li>
+          <li>チラシ・バナー・ポスターをAIで作れる</li>
+          <li>商品写真の補正・背景生成が自分でできる</li>
+          <li>動画リール用の素材を生成できる</li>
+          <li>プレゼン資料をプロ品質で作れる</li>
+          <li>外注に頼らず販促物を内製化できる</li>
+          <li>継続運用のためのテンプレ・ルールを持てる</li>
+        </ul>
+      </div>
+      <div class="course-bridge">
+        <strong>修了後は月額プランへ。</strong>新しいツール・モデルが次々出るデザイン領域は、継続的なキャッチアップが特に効きます。
+      </div>
+    </div>
+
+    <!-- ===== AI経営者 コース ===== -->
+    <div class="course-detail">
+      <div class="course-head">
+        <div class="course-name">AI経営者 コース<span class="tag">意思決定・データ経営</span></div>
+        <div class="course-target">対象：経営者・マネージャー</div>
+      </div>
+      <p class="course-summary">
+        経営者・マネージャーが、<strong>意思決定の質とスピードをAIで底上げ</strong>するコース。
+        市場調査、財務・顧客データ分析、事業計画作成、社内ナレッジのAI化まで、経営全体にAIを組み込みます。
+      </p>
+
+      <div class="block-title green">CURRICULUM ／ カリキュラム標準モデル</div>
+      <div class="phases">
+        <div class="phase">
+          <div class="phase-label">PHASE 1 ／ 第1〜3回</div>
+          <div class="phase-title">経営AI活用の基礎</div>
+          <div class="week">
+            <div class="week-num">WEEK 1</div>
+            <div class="week-topic">経営におけるAI活用の全体像</div>
+            <div class="week-desc">経営者が押さえるべきAI活用の地図とROIの考え方。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 2-3</div>
+            <div class="week-topic">市場調査・競合分析をAIで高速化</div>
+            <div class="week-desc">リサーチ業務をAIで圧縮し、意思決定のサイクルを速める。</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">PHASE 2 ／ 第4〜7回</div>
+          <div class="phase-title">データ経営の実践</div>
+          <div class="week">
+            <div class="week-num">WEEK 4-5</div>
+            <div class="week-topic">財務・顧客データの分析と可視化</div>
+            <div class="week-desc">手元のデータをAIで読み解き、経営ダッシュボードに仕立てる。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 6-7</div>
+            <div class="week-topic">事業計画・戦略資料作成、採用/評価への応用</div>
+            <div class="week-desc">事業計画書、戦略資料、人事オペレーションにAIを組込む。</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">PHASE 3 ／ 第8〜10回</div>
+          <div class="phase-title">組織へのAI実装</div>
+          <div class="week">
+            <div class="week-num">WEEK 8-9</div>
+            <div class="week-topic">社内ナレッジのAI化・意思決定への組込</div>
+            <div class="week-desc">RAG入門。社内文書を資産化し、意思決定プロセスに組込む。</div>
+          </div>
+          <div class="week">
+            <div class="week-num">WEEK 10</div>
+            <div class="week-topic">AI活用ロードマップ策定・定着</div>
+            <div class="week-desc">経営会議で継続的にAIを使い続ける仕組みを設計。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="outcomes">
+        <h4>修了後にできるようになること</h4>
+        <ul>
+          <li>市場・競合の調査を数日→数時間で回せる</li>
+          <li>財務・顧客データをAIに読み解かせられる</li>
+          <li>経営ダッシュボードを自分で組める</li>
+          <li>事業計画書・戦略資料の初稿をAIで作れる</li>
+          <li>採用・評価業務にAIを組込める</li>
+          <li>社内文書を資産化し、検索・参照できる</li>
+          <li>経営会議でAIを意思決定に使える</li>
+          <li>自社のAI活用ロードマップを描ける</li>
+        </ul>
+      </div>
+      <div class="course-bridge">
+        <strong>修了後は月額プランへ。</strong>経営の中核へのAI実装は、継続的な伴走で本当の成果が出ます。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== スポット相談 ============== -->
+<section class="bg-soft">
+  <div class="container">
+    <span class="section-label">SPOT</span>
+    <h2 class="section-title">スポット相談</h2>
+    <p class="section-sub">
+      「いきなりコースや月額は重い、まず1回だけ試したい」という方向けの単発相談。
+      60分で具体的なアウトプットをお持ち帰りいただけます。
+    </p>
+
+    <div class="spot-card">
+      <div class="head">
+        <div>
+          <span class="label">SPOT</span>
+          <h3>単発60分の集中相談セッション</h3>
+          <p style="font-size:13px;color:var(--ink-sub);margin-top:6px;">オンライン／対面（Tatami Works）／御社訪問（出張費別途）から選択可</p>
+        </div>
+        <div class="price">¥20,000<span class="unit">/ 60分</span></div>
+      </div>
+
+      <div class="body">
+        <div>
+          <h4>こんなご相談ができます</h4>
+          <ul>
+            <li>自分の業務でAIをどこから使うべきかの整理</li>
+            <li>特定業務（例：レポート作成、SNS運用）のAI化検討</li>
+            <li>ChatGPT／Claude／Claude Codeの使い分け相談</li>
+            <li>すでに使っているプロンプトの改善</li>
+            <li>社内へのAI導入・展開の進め方</li>
+            <li>セミナーで紹介したツールの追加質問</li>
+          </ul>
+        </div>
+        <div>
+          <h4>持ち帰っていただけるもの</h4>
+          <ul>
+            <li>ご自身の業務に対するAI活用の優先順位マップ</li>
+            <li>すぐ試せるプロンプト案 数点</li>
+            <li>次の一歩のロードマップ（メモ形式でお渡し）</li>
+            <li>必要に応じてツール・サービスの選定指針</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 選び方ガイド ============== -->
+<section>
+  <div class="container">
+    <span class="section-label">HOW TO CHOOSE</span>
+    <h2 class="section-title">迷ったら、こう選んでください。</h2>
+    <p class="section-sub">タイプ別の目安です。実際にはあなたの状況をうかがった上で、最適な組み合わせをご提案します。</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:30px;">
+      <div style="background:white;border:1px solid var(--line);border-radius:14px;padding:28px;">
+        <div style="font-size:12px;color:var(--orange);font-weight:700;letter-spacing:0.12em;margin-bottom:10px;">CASE A</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">継続的に成果を出したい</h3>
+        <p style="font-size:14px;color:var(--ink-sub);line-height:1.8;margin-bottom:14px;">「組織にAIを定着させたい」「日々の業務を一緒に改善したい」という方。<strong>最もおすすめ。</strong>コース未受講でも、いきなりスタートOK。</p>
+        <p style="font-size:14px;font-weight:700;color:var(--orange);">→ 月額プラン（¥100,000〜／月）</p>
+      </div>
+      <div style="background:white;border:1px solid var(--line);border-radius:14px;padding:28px;">
+        <div style="font-size:12px;color:var(--green);font-weight:700;letter-spacing:0.12em;margin-bottom:10px;">CASE B</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">まず体系的に学びたい</h3>
+        <p style="font-size:14px;color:var(--ink-sub);line-height:1.8;margin-bottom:14px;">「2〜3ヶ月で本格的にAI活用スキルを身につけたい」という方。修了後は月額プランへ。</p>
+        <p style="font-size:14px;font-weight:700;color:var(--green);">→ 目的別コース（¥150,000／全10回）</p>
+      </div>
+      <div style="background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:28px;">
+        <div style="font-size:12px;color:var(--ink-mute);font-weight:700;letter-spacing:0.12em;margin-bottom:10px;">CASE C</div>
+        <h3 style="font-size:18px;margin-bottom:10px;">まず1回試したい</h3>
+        <p style="font-size:14px;color:var(--ink-sub);line-height:1.8;margin-bottom:14px;">「AIで本当に自分の業務が変わるのか、まずは確かめたい」という方の入口。</p>
+        <p style="font-size:14px;font-weight:700;color:var(--ink-sub);">→ スポット相談（¥20,000／60分）</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CTA ============== -->
+<section class="cta-section">
+  <div class="container">
+    <span class="cta-badge">FREE / 30分</span>
+    <h2>まずは<span class="accent">無料個別相談</span>から、<br>始めませんか。</h2>
+    <p class="cta-lead">
+      30分のオンライン相談で、あなたの業務にどのプランが合うか一緒に整理します。<br>
+      押し売りは一切しません。「話す場」として、お気軽にご利用ください。
+    </p>
+
+    <div class="cta-card">
+      <div class="cta-info">
+        <h3>無料個別相談（30分・オンライン）</h3>
+        <p>
+          ・あなたの業務にAIをどう活かせるか整理<br>
+          ・最適なプランの組み合わせをご提案<br>
+          ・セミナーで気になった点の追加質問もOK
+        </p>
+        <a href="https://timerex.net/s/tokami.kentaro_b4c8/da756dac" class="cta-button" target="_blank" rel="noopener">無料相談を予約する →</a>
+      </div>
+      <div class="qr-wrap">
+        <img src="assets/qr-timerex.png" alt="無料相談予約QRコード">
+        <div class="qr-cap">QRから予約</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== フッター ============== -->
+<footer>
+  <div class="container">
+    <div class="brand-foot">Tatami Works</div>
+    <div>千歳船橋のコワーキングスペース ／ AI活用サポート</div>
+    <div style="margin-top:10px;">
+      <a href="https://tatami-works.com/" target="_blank" rel="noopener">tatami-works.com</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
